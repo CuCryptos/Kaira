@@ -10,10 +10,9 @@
  *              wp_list_categories, wp_create_category, wp_list_tags, wp_create_tag,
  *              wp_list_media, wp_upload_media, wp_set_featured_image, wp_get_site_info,
  *              wp_list_pages, wp_get_page, wp_create_page, wp_update_page, wp_delete_page
- * - Recipes:   recipe_list, recipe_get, recipe_create, recipe_update,
- *              recipe_parse_ingredients, recipe_estimate_nutrition
- * - AI Gen:    generate_recipe_post, generate_recipe_description, generate_recipe_from_name,
- *              generate_seo_content, generate_image_prompt, generate_recipe_image
+ * - AI Gen:    generate_travel_post, generate_destination_description,
+ *              generate_seo_content, generate_image_prompt, generate_destination_image
+ * - Kaira:     generate_kaira_image, list_kaira_presets, list_destination_presets
  */
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
@@ -25,7 +24,6 @@ import {
 
 // Import tool definitions and handlers
 import { wpToolDefinitions, handleWPTool } from "./tools/wp-tools.js";
-import { recipeToolDefinitions, handleRecipeTool } from "./tools/recipe-tools.js";
 import { aiToolDefinitions, handleAITool } from "./tools/ai-tools.js";
 
 // Import configuration
@@ -58,7 +56,6 @@ const server = new Server(
 // Combine all tool definitions
 const allTools = [
   ...wpToolDefinitions,
-  ...recipeToolDefinitions,
   ...aiToolDefinitions,
 ];
 
@@ -116,14 +113,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       if (result) return result;
     }
 
-    // Try recipe tools
-    if (name.startsWith("recipe_")) {
-      const result = await handleRecipeTool(name, args);
-      if (result) return result;
-    }
-
     // Try AI tools
-    if (name.startsWith("generate_")) {
+    if (name.startsWith("generate_") || name === "list_kaira_presets") {
       const result = await handleAITool(name, args);
       if (result) return result;
     }
@@ -146,8 +137,7 @@ async function main() {
   // Log startup info to stderr (won't interfere with MCP protocol)
   console.error(`${SERVER_CONFIG.name} v${SERVER_CONFIG.version} running`);
   console.error(`WordPress tools: ${wpToolDefinitions.length}`);
-  console.error(`Recipe tools: ${recipeToolDefinitions.length}`);
-  console.error(`AI tools: ${aiToolDefinitions.length}`);
+  console.error(`AI/content tools: ${aiToolDefinitions.length}`);
   console.error(
     `  - Anthropic: ${isAIAvailable() ? "enabled" : "ANTHROPIC_API_KEY not set"}`
   );
