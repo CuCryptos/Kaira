@@ -37,5 +37,15 @@ function kaira_enqueue_assets() {
         array(),
         KAIRA_VERSION
     );
+
+    if ( is_page_template( 'page-gallery' ) || is_page( 'gallery' ) ) {
+        wp_enqueue_script(
+            'kaira-gallery',
+            get_template_directory_uri() . '/assets/js/gallery.js',
+            array(),
+            KAIRA_VERSION,
+            true
+        );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'kaira_enqueue_assets' );
