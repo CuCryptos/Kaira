@@ -3,12 +3,12 @@
 <!-- wp:group {"tagName":"main","layout":{"type":"constrained","contentSize":"1400px"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|60"}}}} -->
 <main class="wp-block-group" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--60)">
 
-<!-- wp:heading {"textAlign":"center","level":2,"style":{"typography":{"fontSize":"0.75rem","textTransform":"uppercase","letterSpacing":"0.2em","fontWeight":"600"},"color":{"text":"var(--wp--preset--color--accent)"}}} -->
-<h2 class="wp-block-heading has-text-align-center has-text-color" style="color:var(--wp--preset--color--accent);font-size:0.75rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase">Portfolio</h2>
-<!-- /wp:heading -->
+<!-- wp:html -->
+<p class="kaira-section-label" style="text-align:center">Portfolio</p>
+<!-- /wp:html -->
 
-<!-- wp:heading {"textAlign":"center","level":2,"style":{"spacing":{"margin":{"top":"1rem","bottom":"3rem"}}},"fontSize":"xx-large"} -->
-<h2 class="wp-block-heading has-text-align-center has-xx-large-font-size" style="margin-top:1rem;margin-bottom:3rem">Gallery</h2>
+<!-- wp:heading {"textAlign":"center","level":1,"className":"kaira-display-font","style":{"spacing":{"margin":{"top":"1rem","bottom":"3rem"}},"typography":{"fontFamily":"var(--wp--preset--font-family--display)","fontWeight":"600","lineHeight":"1.0"}},"textColor":"heading","fontSize":"x-large"} -->
+<h1 class="wp-block-heading has-text-align-center kaira-display-font has-heading-color has-text-color has-x-large-font-size" style="margin-top:1rem;margin-bottom:3rem;font-family:var(--wp--preset--font-family--display);font-weight:600;line-height:1.0">Gallery</h1>
 <!-- /wp:heading -->
 
 <!-- wp:html -->
@@ -24,7 +24,10 @@
 
 <div class="kaira-lightbox" id="kaira-lightbox" role="dialog" aria-modal="true">
 	<button class="kaira-lightbox-close" aria-label="Close lightbox">&times;</button>
+	<button class="kaira-lightbox-prev" aria-label="Previous image">&#8249;</button>
 	<img src="" alt="" />
+	<button class="kaira-lightbox-next" aria-label="Next image">&#8250;</button>
+	<div class="kaira-lightbox-counter"></div>
 </div>
 <!-- /wp:html -->
 
