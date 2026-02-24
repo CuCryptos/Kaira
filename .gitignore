@@ -1,0 +1,12 @@
+# Credentials
+.mcp.json
+.env
+
+# OS files
+.DS_Store
+
+# Dependencies
+node_modules/
+
+# Generated
+kaira-theme.zip
