@@ -40,7 +40,7 @@ body {
 	overflow-x: hidden;
 }
 
-img {
+img:not(.wp-block-cover__image-background) {
 	max-width: 100%;
 	height: auto;
 }
@@ -154,8 +154,10 @@ body .kaira-header.scrolled {
 
 body .kaira-header .wp-block-site-logo img,
 body .kaira-header .custom-logo {
-	height: 36px;
-	width: auto;
+	height: auto;
+	width: 160px;
+	max-height: 50px;
+	object-fit: contain;
 }
 
 body .kaira-header .wp-block-navigation-item__content {
@@ -216,11 +218,18 @@ body .kaira-hero {
 	justify-content: center;
 }
 
-body .kaira-hero img,
+body .kaira-hero .wp-block-cover__image-background,
 body .kaira-hero video {
 	position: absolute;
 	top: 0;
 	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	z-index: 0;
+}
+
+.kaira-scene-intro-image img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
@@ -471,12 +480,6 @@ body .kaira-hero-meta {
 .kaira-scene-intro-image {
 	position: relative;
 	overflow: hidden;
-}
-
-.kaira-scene-intro-image img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
 }
 
 .kaira-scene-intro-text {
@@ -945,6 +948,14 @@ body .kaira-hero-meta {
 
 body .kaira-footer {
 	position: relative;
+}
+
+body .kaira-footer .wp-block-site-logo img,
+body .kaira-footer .custom-logo {
+	height: auto;
+	width: 140px;
+	max-height: 40px;
+	object-fit: contain;
 }
 
 .kaira-footer-social a {
