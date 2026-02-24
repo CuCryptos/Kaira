@@ -23,15 +23,18 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!lightbox) return;
     var lightboxImg = lightbox.querySelector('img');
     var lightboxClose = lightbox.querySelector('.kaira-lightbox-close');
+    var lastFocusedItem = null;
 
     galleryItems.forEach(function (item) {
         item.addEventListener('click', function () {
             var img = this.querySelector('img');
             if (!img) return;
+            lastFocusedItem = this;
             lightboxImg.src = img.src;
             lightboxImg.alt = img.alt;
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
+            lightboxClose.focus();
         });
     });
 
@@ -46,5 +49,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function closeLightbox() {
         lightbox.classList.remove('active');
         document.body.style.overflow = '';
+        if (lastFocusedItem) {
+            lastFocusedItem.focus();
+            lastFocusedItem = null;
+        }
     }
 });

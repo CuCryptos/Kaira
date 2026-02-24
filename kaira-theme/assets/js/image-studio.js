@@ -35,13 +35,22 @@
             var prompt = promptTextarea.value.trim();
 
             if (!preset && !prompt) {
-                statusEl.innerHTML = '<div class="notice notice-warning inline"><p>Please select a preset or enter a scene description.</p></div>';
+                statusEl.textContent = '';
+                var warningDiv = document.createElement('div');
+                warningDiv.className = 'notice notice-warning inline';
+                var warningP = document.createElement('p');
+                warningP.textContent = 'Please select a preset or enter a scene description.';
+                warningDiv.appendChild(warningP);
+                statusEl.appendChild(warningDiv);
                 return;
             }
 
             generateBtn.disabled = true;
             spinner.classList.add('is-active');
-            statusEl.innerHTML = '<p>Generating image&hellip; This may take up to two minutes.</p>';
+            statusEl.textContent = '';
+            var genP = document.createElement('p');
+            genP.textContent = 'Generating image\u2026 This may take up to two minutes.';
+            statusEl.appendChild(genP);
             previewActions.style.display = 'none';
 
             var data = new FormData();
@@ -66,17 +75,41 @@
 
                     if (result.success) {
                         currentImageUrl = result.data.image_url;
-                        previewArea.innerHTML = '<img src="' + currentImageUrl + '" alt="Generated preview" />';
+                        var img = document.createElement('img');
+                        img.src = currentImageUrl;
+                        img.alt = 'Generated preview';
+                        img.style.maxWidth = '100%';
+                        img.style.border = '1px solid #333';
+                        previewArea.textContent = '';
+                        previewArea.appendChild(img);
                         previewActions.style.display = 'flex';
-                        statusEl.innerHTML = '<div class="notice notice-success inline"><p>Image generated successfully.</p></div>';
+                        statusEl.textContent = '';
+                        var successDiv = document.createElement('div');
+                        successDiv.className = 'notice notice-success inline';
+                        var successP = document.createElement('p');
+                        successP.textContent = 'Image generated successfully.';
+                        successDiv.appendChild(successP);
+                        statusEl.appendChild(successDiv);
                     } else {
-                        statusEl.innerHTML = '<div class="notice notice-error inline"><p>' + (result.data.message || 'Generation failed.') + '</p></div>';
+                        statusEl.textContent = '';
+                        var errorDiv = document.createElement('div');
+                        errorDiv.className = 'notice notice-error inline';
+                        var errorP = document.createElement('p');
+                        errorP.textContent = result.data.message || 'Generation failed.';
+                        errorDiv.appendChild(errorP);
+                        statusEl.appendChild(errorDiv);
                     }
                 })
                 .catch(function (err) {
                     generateBtn.disabled = false;
                     spinner.classList.remove('is-active');
-                    statusEl.innerHTML = '<div class="notice notice-error inline"><p>Request failed: ' + err.message + '</p></div>';
+                    statusEl.textContent = '';
+                    var catchDiv = document.createElement('div');
+                    catchDiv.className = 'notice notice-error inline';
+                    var catchP = document.createElement('p');
+                    catchP.textContent = 'Request failed: ' + err.message;
+                    catchDiv.appendChild(catchP);
+                    statusEl.appendChild(catchDiv);
                 });
         });
 
@@ -87,7 +120,10 @@
             }
 
             saveBtn.disabled = true;
-            statusEl.innerHTML = '<p>Saving to Media Library&hellip;</p>';
+            statusEl.textContent = '';
+            var savingP = document.createElement('p');
+            savingP.textContent = 'Saving to Media Library\u2026';
+            statusEl.appendChild(savingP);
 
             var data = new FormData();
             data.append('action', 'kaira_generate_image');
@@ -108,28 +144,52 @@
                     saveBtn.disabled = false;
 
                     if (result.success) {
-                        statusEl.innerHTML =
-                            '<div class="notice notice-success inline"><p>' +
-                            result.data.message +
-                            ' <a href="' + result.data.edit_url + '" target="_blank">View in Media Library</a></p></div>';
+                        statusEl.textContent = '';
+                        var saveSuccessDiv = document.createElement('div');
+                        saveSuccessDiv.className = 'notice notice-success inline';
+                        var saveSuccessP = document.createElement('p');
+                        saveSuccessP.textContent = result.data.message + ' ';
+                        var viewLink = document.createElement('a');
+                        viewLink.href = result.data.edit_url;
+                        viewLink.target = '_blank';
+                        viewLink.textContent = 'View in Media Library';
+                        saveSuccessP.appendChild(viewLink);
+                        saveSuccessDiv.appendChild(saveSuccessP);
+                        statusEl.appendChild(saveSuccessDiv);
                         previewActions.style.display = 'none';
                         currentImageUrl = '';
                     } else {
-                        statusEl.innerHTML = '<div class="notice notice-error inline"><p>' + (result.data.message || 'Save failed.') + '</p></div>';
+                        statusEl.textContent = '';
+                        var saveErrorDiv = document.createElement('div');
+                        saveErrorDiv.className = 'notice notice-error inline';
+                        var saveErrorP = document.createElement('p');
+                        saveErrorP.textContent = result.data.message || 'Save failed.';
+                        saveErrorDiv.appendChild(saveErrorP);
+                        statusEl.appendChild(saveErrorDiv);
                     }
                 })
                 .catch(function (err) {
                     saveBtn.disabled = false;
-                    statusEl.innerHTML = '<div class="notice notice-error inline"><p>Save request failed: ' + err.message + '</p></div>';
+                    statusEl.textContent = '';
+                    var saveCatchDiv = document.createElement('div');
+                    saveCatchDiv.className = 'notice notice-error inline';
+                    var saveCatchP = document.createElement('p');
+                    saveCatchP.textContent = 'Save request failed: ' + err.message;
+                    saveCatchDiv.appendChild(saveCatchP);
+                    statusEl.appendChild(saveCatchDiv);
                 });
         });
 
         // Discard button.
         discardBtn.addEventListener('click', function () {
-            previewArea.innerHTML = '<p class="description">Generated image will appear here.</p>';
+            previewArea.textContent = '';
+            var placeholderP = document.createElement('p');
+            placeholderP.className = 'description';
+            placeholderP.textContent = 'Generated image will appear here.';
+            previewArea.appendChild(placeholderP);
             previewActions.style.display = 'none';
             currentImageUrl = '';
-            statusEl.innerHTML = '';
+            statusEl.textContent = '';
         });
     });
 })();
