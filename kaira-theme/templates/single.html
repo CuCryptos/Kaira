@@ -1,7 +1,7 @@
 <!-- wp:template-part {"slug":"header","area":"header"} /-->
 
-<!-- wp:cover {"useFeaturedImage":true,"dimRatio":70,"overlayColor":"background","minHeight":70,"minHeightUnit":"vh","isDark":true,"className":"kaira-hero kaira-hero--70vh","layout":{"type":"constrained","contentSize":"800px"}} -->
-<div class="wp-block-cover is-dark kaira-hero kaira-hero--70vh" style="min-height:70vh">
+<!-- wp:cover {"useFeaturedImage":true,"dimRatio":70,"overlayColor":"background","minHeight":80,"minHeightUnit":"vh","isDark":true,"className":"kaira-hero kaira-hero--80vh","layout":{"type":"constrained","contentSize":"900px"}} -->
+<div class="wp-block-cover is-dark kaira-hero kaira-hero--80vh" style="min-height:80vh">
 <span aria-hidden="true" class="wp-block-cover__background has-background-background-color has-background-dim-70 has-background-dim"></span>
 <div class="wp-block-cover__inner-container">
 
@@ -9,9 +9,13 @@
 <div class="kaira-hero-overlay" aria-hidden="true"></div>
 <!-- /wp:html -->
 
+<!-- wp:html -->
+<div class="kaira-hero-glass-panel">
+<!-- /wp:html -->
+
 <!-- wp:post-terms {"term":"category","textAlign":"center","className":"kaira-hero-category"} /-->
 
-<!-- wp:post-title {"textAlign":"center","level":1,"style":{"typography":{"fontFamily":"var(--wp--preset--font-family--heading)"},"elements":{"link":{"color":{"text":"var(--wp--preset--color--heading)"}}}},"textColor":"heading","fontSize":"hero"} /-->
+<!-- wp:post-title {"textAlign":"center","level":1,"style":{"typography":{"fontFamily":"var(--wp--preset--font-family--display)","fontWeight":"600","lineHeight":"1.0","letterSpacing":"-0.02em"},"elements":{"link":{"color":{"text":"var(--wp--preset--color--heading)"}}}},"textColor":"heading","fontSize":"hero"} /-->
 
 <!-- wp:group {"className":"kaira-hero-meta","layout":{"type":"flex","justifyContent":"center"}} -->
 <div class="wp-block-group kaira-hero-meta">
@@ -19,21 +23,35 @@
 </div>
 <!-- /wp:group -->
 
+<!-- wp:html -->
+</div><!-- .kaira-hero-glass-panel -->
+<!-- /wp:html -->
+
 </div>
 </div>
 <!-- /wp:cover -->
 
-<!-- wp:group {"tagName":"article","layout":{"type":"constrained","contentSize":"800px"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}}} -->
-<article class="wp-block-group" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)">
+<!-- wp:group {"tagName":"article","className":"kaira-single-content","layout":{"type":"constrained","contentSize":"800px"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}}} -->
+<article class="wp-block-group kaira-single-content" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)">
 
 <!-- wp:post-content {"layout":{"type":"constrained","contentSize":"800px"}} /-->
 
-<!-- wp:separator {"className":"kaira-divider--diamond","style":{"spacing":{"margin":{"top":"4rem","bottom":"4rem"}}}} -->
-<hr class="wp-block-separator kaira-divider--diamond" style="margin-top:4rem;margin-bottom:4rem" />
-<!-- /wp:separator -->
+</article>
+<!-- /wp:group -->
 
-<!-- wp:heading {"textAlign":"center","level":2,"style":{"typography":{"fontSize":"0.75rem","textTransform":"uppercase","letterSpacing":"0.2em","fontWeight":"600"},"color":{"text":"var(--wp--preset--color--accent)"},"spacing":{"margin":{"bottom":"2rem"}}}} -->
-<h2 class="wp-block-heading has-text-align-center has-text-color" style="color:var(--wp--preset--color--accent);font-size:0.75rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:2rem">Keep Exploring</h2>
+<!-- wp:html -->
+<div class="kaira-divider-svg" style="max-width:200px;margin:0 auto">
+<svg viewBox="0 0 200 20" preserveAspectRatio="none">
+<path d="M0 10 Q50 0 100 10 Q150 20 200 10" stroke-linecap="round"/>
+</svg>
+</div>
+<!-- /wp:html -->
+
+<!-- wp:group {"tagName":"section","layout":{"type":"constrained","contentSize":"1200px"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|70"}}}} -->
+<section class="wp-block-group" style="padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--70)">
+
+<!-- wp:heading {"textAlign":"center","level":2,"className":"kaira-section-label","style":{"spacing":{"margin":{"bottom":"2rem"}}}} -->
+<h2 class="wp-block-heading has-text-align-center kaira-section-label" style="margin-bottom:2rem">Keep Exploring</h2>
 <!-- /wp:heading -->
 
 <!-- wp:query {"queryId":3,"query":{"perPage":3,"postType":"post","order":"desc","orderBy":"date"}} -->
@@ -41,8 +59,8 @@
 
 <!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
 
-<!-- wp:group {"className":"kaira-card","layout":{"type":"default"}} -->
-<div class="wp-block-group kaira-card">
+<!-- wp:group {"className":"kaira-card kaira-reveal","layout":{"type":"default"}} -->
+<div class="wp-block-group kaira-card kaira-reveal">
 
 <!-- wp:group {"className":"kaira-card-image","layout":{"type":"default"}} -->
 <div class="wp-block-group kaira-card-image">
@@ -50,7 +68,12 @@
 </div>
 <!-- /wp:group -->
 
-<!-- wp:post-title {"level":3,"isLink":true,"style":{"typography":{"fontSize":"1.25rem"},"spacing":{"margin":{"top":"1rem"}}}} /-->
+<!-- wp:group {"className":"kaira-card-body","layout":{"type":"default"}} -->
+<div class="wp-block-group kaira-card-body">
+<!-- wp:post-terms {"term":"category","className":"kaira-card-meta"} /-->
+<!-- wp:post-title {"level":3,"isLink":true,"style":{"typography":{"fontSize":"1.25rem"}}} /-->
+</div>
+<!-- /wp:group -->
 
 </div>
 <!-- /wp:group -->
@@ -60,7 +83,7 @@
 </div>
 <!-- /wp:query -->
 
-</article>
+</section>
 <!-- /wp:group -->
 
 <!-- wp:template-part {"slug":"footer","area":"footer"} /-->

@@ -1,36 +1,36 @@
 <!-- wp:template-part {"slug":"header","area":"header"} /-->
 
-<!-- wp:cover {"dimRatio":80,"overlayColor":"background","minHeight":50,"minHeightUnit":"vh","isDark":true,"className":"kaira-hero kaira-hero--50vh","layout":{"type":"constrained","contentSize":"800px"}} -->
+<!-- wp:cover {"dimRatio":70,"overlayColor":"background","minHeight":50,"minHeightUnit":"vh","isDark":true,"className":"kaira-hero kaira-hero--50vh","layout":{"type":"constrained","contentSize":"800px"}} -->
 <div class="wp-block-cover is-dark kaira-hero kaira-hero--50vh" style="min-height:50vh">
-<span aria-hidden="true" class="wp-block-cover__background has-background-background-color has-background-dim-80 has-background-dim"></span>
+<span aria-hidden="true" class="wp-block-cover__background has-background-background-color has-background-dim-70 has-background-dim"></span>
 <div class="wp-block-cover__inner-container">
 
 <!-- wp:html -->
 <div class="kaira-hero-overlay" aria-hidden="true"></div>
 <!-- /wp:html -->
 
-<!-- wp:heading {"textAlign":"center","level":1,"style":{"typography":{"fontFamily":"var(--wp--preset--font-family--heading)"},"elements":{"link":{"color":{"text":"var(--wp--preset--color--heading)"}}}},"textColor":"heading","fontSize":"hero"} -->
-<h1 class="wp-block-heading has-text-align-center has-heading-color has-text-color has-hero-font-size" style="font-family:var(--wp--preset--font-family--heading)">The Journal</h1>
-<!-- /wp:heading -->
+<!-- wp:html -->
+<p class="kaira-section-label" style="text-align:center">The Journal</p>
+<!-- /wp:html -->
 
-<!-- wp:paragraph {"align":"center","style":{"color":{"text":"var(--wp--preset--color--muted)"}}} -->
-<p class="has-text-align-center has-text-color" style="color:var(--wp--preset--color--muted)">Stories, destinations, and lifestyle inspiration</p>
-<!-- /wp:paragraph -->
+<!-- wp:heading {"textAlign":"center","level":1,"style":{"typography":{"fontFamily":"var(--wp--preset--font-family--display)","fontWeight":"600","lineHeight":"1.0"},"elements":{"link":{"color":{"text":"var(--wp--preset--color--heading)"}}}},"textColor":"heading","fontSize":"hero"} -->
+<h1 class="wp-block-heading has-text-align-center has-heading-color has-text-color has-hero-font-size" style="font-family:var(--wp--preset--font-family--display);font-weight:600;line-height:1.0">Stories &amp; Destinations</h1>
+<!-- /wp:heading -->
 
 </div>
 </div>
 <!-- /wp:cover -->
 
-<!-- wp:group {"tagName":"main","layout":{"type":"constrained","contentSize":"1200px"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}}} -->
-<main class="wp-block-group" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)">
+<!-- wp:group {"tagName":"section","layout":{"type":"constrained","contentSize":"1200px"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}}} -->
+<section class="wp-block-group" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)">
 
-<!-- wp:query {"queryId":2,"query":{"perPage":9,"postType":"post","order":"desc","orderBy":"date"}} -->
-<div class="wp-block-query">
+<!-- wp:query {"queryId":2,"query":{"perPage":12,"postType":"post","order":"desc","orderBy":"date"},"className":"kaira-card-grid"} -->
+<div class="wp-block-query kaira-card-grid">
 
 <!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
 
-<!-- wp:group {"className":"kaira-card","layout":{"type":"default"}} -->
-<div class="wp-block-group kaira-card">
+<!-- wp:group {"className":"kaira-card kaira-reveal","layout":{"type":"default"}} -->
+<div class="wp-block-group kaira-card kaira-reveal">
 
 <!-- wp:group {"className":"kaira-card-image","layout":{"type":"default"}} -->
 <div class="wp-block-group kaira-card-image">
@@ -51,7 +51,7 @@
 
 <!-- /wp:post-template -->
 
-<!-- wp:query-pagination {"paginationArrow":"arrow","layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"var:preset|spacing|50"}}}} -->
+<!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"3rem"}}}} -->
 <!-- wp:query-pagination-previous /-->
 <!-- wp:query-pagination-numbers /-->
 <!-- wp:query-pagination-next /-->
@@ -60,7 +60,7 @@
 </div>
 <!-- /wp:query -->
 
-</main>
+</section>
 <!-- /wp:group -->
 
 <!-- wp:template-part {"slug":"footer","area":"footer"} /-->
