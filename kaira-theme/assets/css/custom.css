@@ -40,6 +40,12 @@ body {
 	overflow-x: hidden;
 }
 
+/* Prevent WP layout wrappers from creating containing blocks
+   that break position:fixed on the header */
+body .wp-site-blocks {
+	overflow: visible;
+}
+
 img:not(.wp-block-cover__image-background) {
 	max-width: 100%;
 	height: auto;
@@ -132,12 +138,28 @@ body::before {
    5. Navigation / Header
    ========================================================================== */
 
-body .kaira-header {
+/* Fixed positioning on the WP template-part wrapper —
+   bypasses containing block issues from WP layout system */
+body header.wp-block-template-part {
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	z-index: 1000;
+}
+
+body.admin-bar header.wp-block-template-part {
+	top: var(--wp-admin--admin-bar--height, 32px);
+}
+
+@media (max-width: 600px) {
+	body.admin-bar header.wp-block-template-part {
+		top: 0;
+	}
+}
+
+/* Inner .kaira-header: styling only, positioning handled by parent */
+body .kaira-header {
 	background: transparent;
 	transition: background var(--kaira-transition-smooth),
 	            backdrop-filter var(--kaira-transition-smooth),
@@ -631,9 +653,7 @@ body .kaira-scene.wp-block-group .kaira-display-font {
    ========================================================================== */
 
 .kaira-card-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-	gap: 2rem;
+	width: 100%;
 }
 
 .kaira-card {
@@ -706,12 +726,29 @@ body .wp-block-post-template .kaira-card {
 	height: 100%;
 }
 
+body .kaira-card-grid .wp-block-post-template.is-layout-grid {
+	gap: 2.5rem;
+}
+
 body .wp-block-post-template.is-layout-grid {
-	gap: 2rem;
+	gap: 2.5rem;
 }
 
 body .wp-block-post-template.is-layout-grid > li {
 	margin: 0;
+}
+
+body .kaira-card-body .wp-block-post-terms {
+	margin-bottom: 0.5rem;
+}
+
+body .kaira-card-body .wp-block-post-title {
+	margin-top: 0;
+	margin-bottom: 0.75rem;
+}
+
+body .kaira-card-body .wp-block-post-excerpt {
+	margin-top: 0;
 }
 
 .kaira-card-meta {
@@ -1252,7 +1289,7 @@ body .wp-block-button__link:hover {
 	navigation: auto;
 }
 
-.kaira-header {
+header.wp-block-template-part {
 	view-transition-name: header;
 }
 
