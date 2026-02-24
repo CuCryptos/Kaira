@@ -100,7 +100,7 @@ class Kaira_Replicate_Client {
      * @param int    $interval      Seconds between polls.
      * @return array|WP_Error
      */
-    public function poll_prediction( string $prediction_id, int $max_attempts = 60, int $interval = 2 ) {
+    public function poll_prediction( string $prediction_id, int $max_attempts = 120, int $interval = 2 ) {
         for ( $i = 0; $i < $max_attempts; $i++ ) {
             $result = $this->get_prediction( $prediction_id );
 
