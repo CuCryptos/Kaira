@@ -6,7 +6,7 @@
  */
 
 if ( ! defined( 'KAIRA_VERSION' ) ) {
-    define( 'KAIRA_VERSION', '1.0.0' );
+    define( 'KAIRA_VERSION', '1.1.0' );
 }
 
 function kaira_setup() {
@@ -57,6 +57,71 @@ function kaira_enqueue_assets() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'kaira_enqueue_assets' );
+
+/**
+ * Remove Bluehost/NFD framework styles and scripts that conflict with theme CSS.
+ */
+function kaira_dequeue_nfd_assets() {
+    global $wp_styles, $wp_scripts;
+
+    $blocked_prefixes = array( 'nfd-', 'jeep-', 'bluehost-', 'newfold-', 'wonder-', 'jeep_starter' );
+
+    if ( ! empty( $wp_styles->registered ) ) {
+        foreach ( $wp_styles->registered as $handle => $dep ) {
+            foreach ( $blocked_prefixes as $prefix ) {
+                if ( strpos( $handle, $prefix ) === 0 ) {
+                    wp_dequeue_style( $handle );
+                    wp_deregister_style( $handle );
+                    break;
+                }
+            }
+        }
+    }
+
+    if ( ! empty( $wp_scripts->registered ) ) {
+        foreach ( $wp_scripts->registered as $handle => $dep ) {
+            foreach ( $blocked_prefixes as $prefix ) {
+                if ( strpos( $handle, $prefix ) === 0 ) {
+                    wp_dequeue_script( $handle );
+                    wp_deregister_script( $handle );
+                    break;
+                }
+            }
+        }
+    }
+}
+add_action( 'wp_enqueue_scripts', 'kaira_dequeue_nfd_assets', 999 );
+
+/**
+ * Reset Site Editor template overrides when theme version changes.
+ * Forces WordPress to use our theme file templates instead of stale DB copies.
+ */
+function kaira_reset_templates_on_update() {
+    $stored = get_option( 'kaira_template_version', '' );
+    if ( $stored === KAIRA_VERSION ) {
+        return;
+    }
+
+    $templates = get_posts( array(
+        'post_type'      => array( 'wp_template', 'wp_template_part' ),
+        'posts_per_page' => -1,
+        'no_found_rows'  => true,
+        'tax_query'      => array(
+            array(
+                'taxonomy' => 'wp_theme',
+                'field'    => 'slug',
+                'terms'    => get_stylesheet(),
+            ),
+        ),
+    ) );
+
+    foreach ( $templates as $template ) {
+        wp_delete_post( $template->ID, true );
+    }
+
+    update_option( 'kaira_template_version', KAIRA_VERSION );
+}
+add_action( 'after_setup_theme', 'kaira_reset_templates_on_update' );
 
 require get_template_directory() . '/inc/custom-post-types.php';
 require get_template_directory() . '/inc/replicate-api.php';
