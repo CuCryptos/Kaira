@@ -45,6 +45,25 @@
 - No PHP available locally — cannot run php -l for linting
 - No test suite — verify via build script run and visual inspection on live site
 
+## MCP Server (wp-mcp-server)
+- Tool dispatch in index.js routes by prefix: `wp_*` → wp-tools, `generate_*` → ai-tools
+- Non-standard prefixed tools (e.g., `list_kaira_presets`, `list_destination_presets`) need explicit dispatch entries in index.js
+- Restart Claude Code after changes to `.mcp.json` or MCP server code
+- Test Replicate API directly: `curl -s -H "Authorization: Bearer $TOKEN" -H "Prefer: wait" https://api.replicate.com/v1/predictions -d '{"version":"...","input":{"prompt":"..."}}'`
+
+## Image Generation APIs
+- **Replicate (Kaira portraits only)**: Flux Dev + LoRA, model `cucryptos/kaira`, trigger word `skye`
+- `KAIRA_MODEL_VERSION` must be the version hash (not training ID) — get from training output or `/v1/models/cucryptos/kaira`
+- **Gemini Imagen (everything else)**: locations, backgrounds, website imagery — anything that isn't Kaira herself
+- Model: `imagen-4.0-generate-001`, personGeneration: DONT_ALLOW (no people in Gemini images)
+- 12 Kaira scene presets in `wp-mcp-server/prompts/kaira-presets.js`: mykonos, paris, bali, dubai, tulum, amalfi, gym, fashion, hotel, restaurant, winter
+- 8 destination scene presets in `wp-mcp-server/prompts/destination-presets.js`: tropical_beach, european_cityscape, luxury_hotel, mountain_vista, coastal_village, nightlife, desert_luxury, tropical_jungle
+
+## WordPress Layout System Conflicts
+- WP adds `is-layout-constrained` + `has-global-padding` classes that inject `margin-left: auto !important` and `max-width` on children
+- Override with `max-width: none` on specific elements — cannot avoid !important from WP core
+- Blog post template grid: WP generates `grid-template-columns` — custom gap/margin overrides needed
+
 ## Design Tokens (theme.json)
 - Background: #0a0a0a | Surface: #141414 | Accent: #c9a84c (gold)
 - Text: #f5f0e8 | Heading: #ffffff | Muted: #8a8275
