@@ -72,22 +72,23 @@ img {
    3. Navigation
    ========================================================================== */
 
-.kaira-header {
+body .kaira-header {
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	z-index: 1000;
+	background: transparent;
 	transition: background 0.3s ease, backdrop-filter 0.3s ease;
 }
 
-.kaira-header.scrolled {
+body .kaira-header.scrolled {
 	background: rgba(10, 10, 10, 0.95);
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
 }
 
-.kaira-nav-link {
+body .kaira-nav-link {
 	font-size: 0.75rem;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -97,8 +98,8 @@ img {
 	transition: color 0.3s ease;
 }
 
-.kaira-nav-link:hover,
-.kaira-nav-link:focus {
+body .kaira-nav-link:hover,
+body .kaira-nav-link:focus {
 	color: var(--wp--preset--color--accent);
 }
 
@@ -107,7 +108,7 @@ img {
    4. Hero Section
    ========================================================================== */
 
-.kaira-hero {
+body .kaira-hero {
 	position: relative;
 	width: 100%;
 	height: 100vh;
@@ -117,8 +118,8 @@ img {
 	justify-content: center;
 }
 
-.kaira-hero img,
-.kaira-hero video {
+body .kaira-hero img,
+body .kaira-hero video {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -127,7 +128,7 @@ img {
 	object-fit: cover;
 }
 
-.kaira-hero-overlay {
+body .kaira-hero-overlay {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -144,7 +145,7 @@ img {
 }
 
 /* Ensure hero text sits above overlay and diamond pattern */
-.kaira-hero .wp-block-cover__inner-container {
+body .kaira-hero .wp-block-cover__inner-container {
 	position: relative;
 	z-index: 3;
 }
@@ -188,6 +189,15 @@ img {
 .kaira-hero--50vh {
 	height: 50vh;
 	min-height: 320px;
+}
+
+/* Homepage hero fallback — visible even without a background image */
+body .kaira-hero-home {
+	background: radial-gradient(
+		ellipse at 50% 40%,
+		rgba(201, 168, 76, 0.08) 0%,
+		rgba(10, 10, 10, 1) 70%
+	);
 }
 
 /* Bokeh particles — floating gold dots (homepage only) */
@@ -255,14 +265,14 @@ img {
 }
 
 /* Category pill — sits above hero title */
-.kaira-hero-category {
+body .kaira-hero-category {
 	display: flex;
 	justify-content: center;
 	gap: 0.5rem;
 	margin-bottom: 1.5rem;
 }
 
-.kaira-hero-category a {
+body .kaira-hero-category a {
 	display: inline-block;
 	background: var(--wp--preset--color--accent);
 	color: var(--wp--preset--color--background);
@@ -277,12 +287,12 @@ img {
 	transition: filter 0.3s ease;
 }
 
-.kaira-hero-category a:hover {
+body .kaira-hero-category a:hover {
 	filter: brightness(1.2);
 }
 
 /* Post meta line in hero */
-.kaira-hero-meta {
+body .kaira-hero-meta {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -294,7 +304,7 @@ img {
 	margin-top: 1rem;
 }
 
-.kaira-hero-meta span + span::before {
+body .kaira-hero-meta span + span::before {
 	content: '\2022';
 	color: var(--wp--preset--color--accent);
 	margin-right: 1.5rem;
