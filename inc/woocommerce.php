@@ -6,6 +6,9 @@
  */
 
 function kaira_woocommerce_setup() {
+    if ( ! class_exists( 'WooCommerce' ) ) {
+        return;
+    }
     add_theme_support( 'woocommerce', array(
         'thumbnail_image_width' => 600,
         'single_image_width'    => 900,

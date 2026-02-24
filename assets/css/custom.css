@@ -177,7 +177,7 @@ img {
 	column-gap: 1rem;
 }
 
-.kaira-gallery-masonry-item {
+.kaira-gallery-item {
 	break-inside: avoid;
 	overflow: hidden;
 	cursor: pointer;
@@ -185,17 +185,17 @@ img {
 	position: relative;
 }
 
-.kaira-gallery-masonry-item img {
+.kaira-gallery-item img {
 	width: 100%;
 	display: block;
 	transition: transform 0.4s ease;
 }
 
-.kaira-gallery-masonry-item:hover img {
+.kaira-gallery-item:hover img {
 	transform: scale(1.03);
 }
 
-.kaira-gallery-masonry-item::after {
+.kaira-gallery-item::after {
 	content: "";
 	position: absolute;
 	top: 0;
@@ -207,7 +207,7 @@ img {
 	pointer-events: none;
 }
 
-.kaira-gallery-masonry-item:hover::after {
+.kaira-gallery-item:hover::after {
 	border-color: var(--wp--preset--color--accent);
 }
 
@@ -382,4 +382,19 @@ img {
 
 .wp-block-button__link {
 	border-radius: 0;
+}
+
+
+/* ==========================================================================
+   13. Reduced Motion
+   ========================================================================== */
+
+/* --- Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+	}
 }

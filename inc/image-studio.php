@@ -253,6 +253,12 @@ class Kaira_Image_Studio {
             wp_send_json_error( array( 'message' => 'No image URL provided.' ) );
         }
 
+        $parsed = wp_parse_url( $image_url );
+        $allowed_hosts = array( 'replicate.delivery', 'pbxt.replicate.delivery', 'replicate.com' );
+        if ( ! isset( $parsed['host'] ) || ! in_array( $parsed['host'], $allowed_hosts, true ) ) {
+            wp_send_json_error( array( 'message' => 'Invalid image source domain.' ) );
+        }
+
         $scene  = sanitize_text_field( $_POST['scene'] ?? 'general' );
         $title  = 'Kaira — ' . ucfirst( str_replace( '_', ' ', $scene ) );
 
