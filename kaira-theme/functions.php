@@ -51,6 +51,7 @@ function kaira_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'kaira_enqueue_assets' );
 
 require get_template_directory() . '/inc/custom-post-types.php';
+require get_template_directory() . '/inc/replicate-api.php';
 
 if ( class_exists( 'WooCommerce' ) ) {
     require get_template_directory() . '/inc/woocommerce.php';
