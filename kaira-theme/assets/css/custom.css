@@ -1,23 +1,43 @@
 /*--------------------------------------------------------------
- * Kaira Theme — Custom CSS
+ * Kaira Theme v2.0 — Custom CSS
  *
- * Covers styles that theme.json cannot handle: animations,
- * pseudo-elements, hover states, complex selectors, and
- * custom components.
- *
- * All colour and spacing values reference WordPress design
- * tokens via var(--wp--preset--*).
+ * Award-winning redesign: cinematic scroll-driven animations,
+ * glassmorphism, canvas particles, 3D interactions.
  *--------------------------------------------------------------*/
 
 
 /* ==========================================================================
-   1. Global
+   1. CSS Custom Properties
+   ========================================================================== */
+
+:root {
+	--kaira-glass-bg: rgba(10, 10, 10, 0.6);
+	--kaira-glass-border: rgba(201, 168, 76, 0.15);
+	--kaira-glass-blur: 20px;
+	--kaira-accent-subtle: rgba(201, 168, 76, 0.08);
+	--kaira-accent-glow: rgba(201, 168, 76, 0.12);
+	--kaira-rose: #8b3a4a;
+	--kaira-transition-smooth: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	--kaira-transition-spring: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+
+/* ==========================================================================
+   2. Global & Utility
    ========================================================================== */
 
 *,
 *::before,
 *::after {
 	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	overflow-x: hidden;
 }
 
 img {
@@ -30,46 +50,86 @@ img {
 	color: var(--wp--preset--color--background);
 }
 
+.kaira-display-font {
+	font-family: var(--wp--preset--font-family--display);
+	font-weight: 600;
+	line-height: 1.0;
+	letter-spacing: -0.02em;
+}
+
+.kaira-section-label {
+	font-family: var(--wp--preset--font-family--body);
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	color: var(--wp--preset--color--accent);
+}
+
+@keyframes kaira-char-in {
+	from { opacity: 0; transform: translateY(20px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
 
 /* ==========================================================================
-   2. Gold Divider
+   3. Noise Texture & Ambient Effects
    ========================================================================== */
 
-.kaira-divider {
-	width: 60px;
-	height: 1px;
-	background: var(--wp--preset--color--accent);
-	margin: 2rem auto;
-	border: none;
+body::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	z-index: 9998;
+	opacity: 0.03;
+	background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+	background-repeat: repeat;
+	background-size: 256px 256px;
 }
 
-/* Decorative diamond-line divider */
-.kaira-divider--diamond {
-	width: 100%;
-	height: 20px;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20' viewBox='0 0 40 20'%3E%3Cpath d='M20 2 L38 10 L20 18 L2 10 Z' fill='none' stroke='%23c9a84c' stroke-width='0.75' opacity='0.3'/%3E%3C/svg%3E");
-	background-repeat: repeat-x;
-	background-position: center;
-	background-size: auto 20px;
-	border: none;
-	margin: 3rem auto;
+.kaira-ambient-glow {
+	position: fixed;
+	width: 600px;
+	height: 600px;
+	border-radius: 50%;
+	background: radial-gradient(circle, var(--kaira-accent-subtle) 0%, transparent 70%);
+	pointer-events: none;
+	z-index: -1;
+	transform: translate(-50%, -50%);
+	transition: opacity 0.3s ease;
+	opacity: 0;
 }
 
-/* Decorative chevron divider */
-.kaira-divider--chevron {
-	width: 100%;
-	height: 16px;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16' viewBox='0 0 24 16'%3E%3Cpath d='M0 14 L12 2 L24 14' fill='none' stroke='%23c9a84c' stroke-width='0.75' opacity='0.25'/%3E%3C/svg%3E");
-	background-repeat: repeat-x;
-	background-position: center;
-	background-size: auto 16px;
-	border: none;
-	margin: 3rem auto;
+.kaira-ambient-glow.active {
+	opacity: 1;
 }
 
 
 /* ==========================================================================
-   3. Navigation
+   4. Glassmorphism Utility
+   ========================================================================== */
+
+.kaira-glass {
+	background: var(--kaira-glass-bg);
+	backdrop-filter: blur(var(--kaira-glass-blur));
+	-webkit-backdrop-filter: blur(var(--kaira-glass-blur));
+	border: 1px solid var(--kaira-glass-border);
+}
+
+.kaira-glass--strong {
+	background: rgba(10, 10, 10, 0.8);
+	backdrop-filter: blur(30px);
+	-webkit-backdrop-filter: blur(30px);
+	border: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+
+/* ==========================================================================
+   5. Navigation / Header
    ========================================================================== */
 
 body .kaira-header {
@@ -79,33 +139,71 @@ body .kaira-header {
 	width: 100%;
 	z-index: 1000;
 	background: transparent;
-	transition: background 0.3s ease, backdrop-filter 0.3s ease;
+	transition: background var(--kaira-transition-smooth),
+	            backdrop-filter var(--kaira-transition-smooth),
+	            border-color var(--kaira-transition-smooth);
+	border-bottom: 1px solid transparent;
 }
 
 body .kaira-header.scrolled {
-	background: rgba(10, 10, 10, 0.95);
-	backdrop-filter: blur(10px);
-	-webkit-backdrop-filter: blur(10px);
+	background: var(--kaira-glass-bg);
+	backdrop-filter: blur(var(--kaira-glass-blur));
+	-webkit-backdrop-filter: blur(var(--kaira-glass-blur));
+	border-bottom-color: var(--kaira-glass-border);
 }
 
-body .kaira-nav-link {
+body .kaira-header .wp-block-site-logo img,
+body .kaira-header .custom-logo {
+	height: 36px;
+	width: auto;
+}
+
+body .kaira-header .wp-block-navigation-item__content {
 	font-size: 0.75rem;
 	font-weight: 600;
 	text-transform: uppercase;
 	letter-spacing: 0.15em;
 	color: var(--wp--preset--color--heading);
 	text-decoration: none;
-	transition: color 0.3s ease;
+	position: relative;
+	padding-bottom: 4px;
 }
 
-body .kaira-nav-link:hover,
-body .kaira-nav-link:focus {
+body .kaira-header .wp-block-navigation-item__content::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	background: var(--wp--preset--color--accent);
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+body .kaira-header .wp-block-navigation-item__content:hover::after {
+	transform: scaleX(1);
+}
+
+body .kaira-header .wp-block-navigation-item__content:hover {
 	color: var(--wp--preset--color--accent);
+}
+
+.wp-block-navigation__responsive-container.is-menu-open {
+	background: rgba(5, 5, 5, 0.98) !important;
+	backdrop-filter: blur(30px);
+	-webkit-backdrop-filter: blur(30px);
+}
+
+.wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content {
+	font-size: 1.5rem;
+	letter-spacing: 0.1em;
 }
 
 
 /* ==========================================================================
-   4. Hero Section
+   6. Hero System
    ========================================================================== */
 
 body .kaira-hero {
@@ -135,116 +233,98 @@ body .kaira-hero-overlay {
 	width: 100%;
 	height: 100%;
 	background: linear-gradient(to bottom,
-		rgba(10, 10, 10, 0.5) 0%,
-		rgba(201, 168, 76, 0.1) 20%,
-		rgba(201, 168, 76, 0.05) 40%,
-		rgba(10, 10, 10, 0.6) 60%,
-		rgba(10, 10, 10, 0.9) 100%
+		rgba(5, 5, 5, 0.4) 0%,
+		rgba(201, 168, 76, 0.06) 30%,
+		rgba(5, 5, 5, 0.5) 60%,
+		rgba(5, 5, 5, 0.95) 100%
 	);
 	z-index: 1;
 }
 
-/* Ensure hero text sits above overlay and diamond pattern */
 body .kaira-hero .wp-block-cover__inner-container {
 	position: relative;
 	z-index: 3;
 }
 
-/* Wave edge at bottom of hero — smooth transition to content */
-.kaira-hero::before {
-	content: '';
-	position: absolute;
-	bottom: -1px;
-	left: 0;
-	width: 100%;
-	height: 48px;
-	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 48' preserveAspectRatio='none'%3E%3Cpath d='M0 48 L0 24 Q180 0 360 24 Q540 48 720 24 Q900 0 1080 24 Q1260 48 1440 24 L1440 48 Z' fill='%230a0a0a'/%3E%3C/svg%3E");
-	background-size: 100% 48px;
-	background-repeat: no-repeat;
-	z-index: 4;
-	pointer-events: none;
+.kaira-hero--80vh { height: 80vh; min-height: 500px; }
+.kaira-hero--70vh { height: 70vh; min-height: 400px; }
+.kaira-hero--50vh { height: 50vh; min-height: 320px; }
+.kaira-hero--40vh { height: 40vh; min-height: 280px; }
+
+body .kaira-hero-home {
+	background: radial-gradient(
+		ellipse at 50% 40%,
+		rgba(201, 168, 76, 0.06) 0%,
+		rgba(5, 5, 5, 1) 70%
+	);
 }
 
-/* Subtle diamond pattern overlay on hero */
-.kaira-hero::after {
-	content: '';
+.kaira-particles-canvas {
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M20 0 L40 20 L20 40 L0 20 Z' fill='none' stroke='%23c9a84c' stroke-width='0.5' opacity='0.04'/%3E%3C/svg%3E");
-	background-repeat: repeat;
-	background-size: 40px 40px;
 	z-index: 2;
 	pointer-events: none;
 }
 
-/* Hero height variants */
-.kaira-hero--70vh {
-	height: 70vh;
-	min-height: 400px;
+.kaira-hero-title {
+	font-family: var(--wp--preset--font-family--display);
+	font-weight: 600;
+	font-size: clamp(3rem, 8vw, 8rem);
+	line-height: 1.0;
+	letter-spacing: -0.02em;
+	color: var(--wp--preset--color--heading);
+	text-align: center;
 }
 
-.kaira-hero--50vh {
-	height: 50vh;
-	min-height: 320px;
+.kaira-hero-subtitle {
+	display: inline-block;
+	background: var(--kaira-glass-bg);
+	backdrop-filter: blur(var(--kaira-glass-blur));
+	-webkit-backdrop-filter: blur(var(--kaira-glass-blur));
+	border: 1px solid var(--kaira-glass-border);
+	padding: 1rem 2rem;
+	margin-top: 2rem;
+	font-size: 1.125rem;
+	letter-spacing: 0.05em;
+	color: var(--wp--preset--color--text);
 }
 
-/* Homepage hero fallback — visible even without a background image */
-body .kaira-hero-home {
-	background: radial-gradient(
-		ellipse at 50% 40%,
-		rgba(201, 168, 76, 0.08) 0%,
-		rgba(10, 10, 10, 1) 70%
-	);
-}
-
-/* Bokeh particles — floating gold dots (homepage only) */
-.kaira-bokeh {
-	position: absolute;
-	border-radius: 50%;
-	background: var(--wp--preset--color--accent);
-	z-index: 3;
-	pointer-events: none;
-	animation: kaira-float var(--bokeh-duration, 14s) var(--bokeh-delay, 0s) infinite ease-in-out;
-	opacity: var(--bokeh-opacity, 0.15);
-}
-
-@keyframes kaira-float {
-	0%, 100% {
-		transform: translateY(0) translateX(0);
-		opacity: var(--bokeh-opacity, 0.15);
-	}
-	25% {
-		transform: translateY(-40px) translateX(10px);
-	}
-	50% {
-		transform: translateY(-80px) translateX(-5px);
-		opacity: calc(var(--bokeh-opacity, 0.15) * 1.5);
-	}
-	75% {
-		transform: translateY(-40px) translateX(8px);
-	}
-}
-
-/* Scroll indicator arrow */
 .kaira-scroll-indicator {
 	position: absolute;
-	bottom: 3rem;
+	bottom: 2rem;
 	left: 50%;
 	transform: translateX(-50%);
 	z-index: 5;
-	animation: kaira-bounce 2s infinite;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.5rem;
 	transition: opacity 0.4s ease;
 }
 
-.kaira-scroll-indicator svg {
-	width: 24px;
-	height: 24px;
-	stroke: var(--wp--preset--color--text);
-	stroke-width: 2;
-	fill: none;
+.kaira-scroll-indicator span {
+	font-size: 0.625rem;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	color: var(--wp--preset--color--muted);
+}
+
+.kaira-scroll-indicator::after {
+	content: '';
+	width: 1px;
+	height: 40px;
+	background: var(--wp--preset--color--accent);
+	animation: kaira-scroll-line 2s ease-in-out infinite;
+}
+
+@keyframes kaira-scroll-line {
+	0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
+	50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+	50.01% { transform-origin: bottom; }
+	100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
 }
 
 .kaira-scroll-indicator.hidden {
@@ -252,19 +332,6 @@ body .kaira-hero-home {
 	pointer-events: none;
 }
 
-@keyframes kaira-bounce {
-	0%, 20%, 50%, 80%, 100% {
-		transform: translateX(-50%) translateY(0);
-	}
-	40% {
-		transform: translateX(-50%) translateY(-8px);
-	}
-	60% {
-		transform: translateX(-50%) translateY(-4px);
-	}
-}
-
-/* Category pill — sits above hero title */
 body .kaira-hero-category {
 	display: flex;
 	justify-content: center;
@@ -274,24 +341,24 @@ body .kaira-hero-category {
 
 body .kaira-hero-category a {
 	display: inline-block;
-	background: var(--wp--preset--color--accent);
-	color: var(--wp--preset--color--background);
+	background: var(--kaira-rose);
+	color: var(--wp--preset--color--heading);
 	font-family: var(--wp--preset--font-family--body);
-	font-size: 0.75rem;
+	font-size: 0.7rem;
 	font-weight: 700;
 	text-transform: uppercase;
-	letter-spacing: 0.1em;
-	padding: 0.25rem 1rem;
-	border-radius: 9999px;
+	letter-spacing: 0.15em;
+	padding: 0.3rem 1rem;
+	border-radius: 0;
 	text-decoration: none;
-	transition: filter 0.3s ease;
+	transition: background var(--kaira-transition-smooth);
 }
 
 body .kaira-hero-category a:hover {
-	filter: brightness(1.2);
+	background: var(--wp--preset--color--accent);
+	color: var(--wp--preset--color--background);
 }
 
-/* Post meta line in hero */
 body .kaira-hero-meta {
 	display: flex;
 	align-items: center;
@@ -299,32 +366,228 @@ body .kaira-hero-meta {
 	gap: 1.5rem;
 	color: var(--wp--preset--color--muted);
 	font-size: 0.875rem;
-	font-family: var(--wp--preset--font-family--body);
 	letter-spacing: 0.05em;
 	margin-top: 1rem;
 }
 
-body .kaira-hero-meta span + span::before {
-	content: '\2022';
-	color: var(--wp--preset--color--accent);
-	margin-right: 1.5rem;
-	font-size: 0.75em;
+
+/* ==========================================================================
+   7. Scroll-Driven Animations
+   ========================================================================== */
+
+.kaira-reveal {
+	opacity: 0;
+	transform: translateY(30px);
+	animation: kaira-reveal-up linear both;
+	animation-timeline: view();
+	animation-range: entry 0% entry 30%;
 }
 
-/* Decorative wave accent under hero title */
-.kaira-hero .wp-block-cover__inner-container h1::after {
-	content: '';
-	display: block;
-	width: 120px;
-	height: 12px;
-	margin: 1rem auto 0;
-	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='12' viewBox='0 0 120 12'%3E%3Cpath d='M0 6 Q15 0 30 6 Q45 12 60 6 Q75 0 90 6 Q105 12 120 6' fill='none' stroke='%23c9a84c' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center;
-	opacity: 0.7;
+@keyframes kaira-reveal-up {
+	from { opacity: 0; transform: translateY(30px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+.kaira-reveal-stagger-1 { animation-range: entry 0% entry 30%; }
+.kaira-reveal-stagger-2 { animation-range: entry 5% entry 35%; }
+.kaira-reveal-stagger-3 { animation-range: entry 10% entry 40%; }
+
+.kaira-parallax {
+	animation: kaira-parallax-shift linear both;
+	animation-timeline: scroll();
+}
+
+@keyframes kaira-parallax-shift {
+	from { transform: translateY(-5%); }
+	to { transform: translateY(5%); }
+}
+
+.kaira-hero-exit {
+	animation: kaira-hero-exit-anim linear both;
+	animation-timeline: scroll();
+	animation-range: 0vh 100vh;
+}
+
+@keyframes kaira-hero-exit-anim {
+	from { opacity: 1; transform: scale(1); filter: blur(0); }
+	to { opacity: 0; transform: scale(0.95); filter: blur(4px); }
+}
+
+.kaira-scroll-progress {
+	position: sticky;
+	top: 0;
+	height: 2px;
+	background: var(--wp--preset--color--accent);
+	transform-origin: left;
+	transform: scaleX(0);
+	animation: kaira-progress-fill linear both;
+	animation-timeline: scroll(nearest);
+	z-index: 10;
+}
+
+@keyframes kaira-progress-fill {
+	from { transform: scaleX(0); }
+	to { transform: scaleX(1); }
+}
+
+@supports not (animation-timeline: view()) {
+	.kaira-reveal {
+		opacity: 0;
+		transform: translateY(20px);
+		transition: opacity 0.6s ease, transform 0.6s ease;
+	}
+
+	.kaira-reveal.visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 
 /* ==========================================================================
-   5. Card Grid
+   8. Cinematic Scenes (Homepage)
+   ========================================================================== */
+
+.kaira-cinematic {
+	scroll-snap-type: y proximity;
+}
+
+.kaira-scene {
+	min-height: 100vh;
+	scroll-snap-align: start;
+	position: relative;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+}
+
+.kaira-scene-intro {
+	display: grid;
+	grid-template-columns: 3fr 2fr;
+	gap: 0;
+	min-height: 100vh;
+}
+
+.kaira-scene-intro-image {
+	position: relative;
+	overflow: hidden;
+}
+
+.kaira-scene-intro-image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.kaira-scene-intro-text {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 5rem;
+}
+
+.kaira-scene-destinations {
+	overflow: hidden;
+}
+
+.kaira-horizontal-track {
+	display: flex;
+	gap: 2rem;
+	padding: 0 5rem;
+	width: max-content;
+	animation: kaira-horizontal-scroll linear both;
+	animation-timeline: view();
+	animation-range: contain 0% contain 100%;
+}
+
+@keyframes kaira-horizontal-scroll {
+	from { transform: translateX(0); }
+	to { transform: translateX(calc(-100% + 100vw)); }
+}
+
+.kaira-destination-card {
+	position: relative;
+	width: 70vw;
+	max-width: 600px;
+	height: 70vh;
+	flex-shrink: 0;
+	overflow: hidden;
+}
+
+.kaira-destination-card img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.6s ease;
+}
+
+.kaira-destination-card:hover img {
+	transform: scale(1.05);
+}
+
+.kaira-destination-card-info {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 2rem;
+	background: linear-gradient(transparent, rgba(5, 5, 5, 0.9));
+}
+
+.kaira-destination-card-info .kaira-tag {
+	display: inline-block;
+	background: var(--kaira-rose);
+	color: var(--wp--preset--color--heading);
+	font-size: 0.625rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	padding: 0.25rem 0.75rem;
+	margin-bottom: 0.75rem;
+}
+
+.kaira-journal-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	gap: 2rem;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 2rem;
+}
+
+.kaira-journal-grid .kaira-card--featured {
+	grid-row: 1 / -1;
+	position: relative;
+}
+
+.kaira-journal-grid .kaira-card--featured::before {
+	content: '';
+	position: absolute;
+	top: -20px;
+	left: -20px;
+	right: -20px;
+	bottom: -20px;
+	background: radial-gradient(ellipse, var(--kaira-accent-glow) 0%, transparent 70%);
+	z-index: -1;
+	pointer-events: none;
+}
+
+.kaira-scene-split {
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+	min-height: 100vh;
+}
+
+.kaira-scene-split > * {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+
+/* ==========================================================================
+   9. Card System
    ========================================================================== */
 
 .kaira-card-grid {
@@ -335,11 +598,16 @@ body .kaira-hero-meta span + span::before {
 
 .kaira-card {
 	background: var(--wp--preset--color--surface);
-	transition: transform 0.3s ease;
+	transition: transform var(--kaira-transition-smooth),
+	            box-shadow var(--kaira-transition-smooth);
+	position: relative;
+	overflow: hidden;
 }
 
 .kaira-card:hover {
-	transform: translateY(-4px);
+	transform: translateY(-8px);
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
+	            0 0 30px var(--kaira-accent-subtle);
 }
 
 .kaira-card-image {
@@ -351,11 +619,26 @@ body .kaira-hero-meta span + span::before {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	transition: transform 0.4s ease;
+	transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .kaira-card:hover .kaira-card-image img {
 	transform: scale(1.05);
+}
+
+.kaira-card-overlay {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 2rem;
+	background: linear-gradient(transparent, rgba(5, 5, 5, 0.9) 40%);
+	transform: translateY(60%);
+	transition: transform var(--kaira-transition-smooth);
+}
+
+.kaira-card:hover .kaira-card-overlay {
+	transform: translateY(0);
 }
 
 .kaira-card-body {
@@ -369,9 +652,30 @@ body .kaira-hero-meta span + span::before {
 	letter-spacing: 0.1em;
 }
 
+.kaira-tilt {
+	transform-style: preserve-3d;
+	perspective: 1000px;
+}
+
+.kaira-tilt-inner {
+	transition: transform 0.1s ease-out;
+	will-change: transform;
+}
+
+.kaira-tilt-reflection {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.03) 45%, transparent 50%);
+	pointer-events: none;
+	z-index: 2;
+}
+
 
 /* ==========================================================================
-   6. Gallery Masonry
+   10. Gallery & Lightbox
    ========================================================================== */
 
 .kaira-gallery-masonry {
@@ -390,7 +694,7 @@ body .kaira-hero-meta span + span::before {
 .kaira-gallery-item img {
 	width: 100%;
 	display: block;
-	transition: transform 0.4s ease;
+	transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .kaira-gallery-item:hover img {
@@ -398,14 +702,11 @@ body .kaira-hero-meta span + span::before {
 }
 
 .kaira-gallery-item::after {
-	content: "";
+	content: '';
 	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+	inset: 0;
 	border: 2px solid transparent;
-	transition: border-color 0.3s ease;
+	transition: border-color var(--kaira-transition-smooth);
 	pointer-events: none;
 }
 
@@ -413,32 +714,43 @@ body .kaira-hero-meta span + span::before {
 	border-color: var(--wp--preset--color--accent);
 }
 
-/* Masonry responsive */
-@media (max-width: 900px) {
-	.kaira-gallery-masonry {
-		columns: 2;
-	}
+.kaira-gallery-item-info {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 1.5rem;
+	background: linear-gradient(transparent, rgba(5, 5, 5, 0.8));
+	transform: translateY(100%);
+	transition: transform var(--kaira-transition-smooth);
 }
 
-@media (max-width: 600px) {
-	.kaira-gallery-masonry {
-		columns: 1;
-	}
+.kaira-gallery-item:hover .kaira-gallery-item-info {
+	transform: translateY(0);
 }
 
+.kaira-shimmer {
+	background: linear-gradient(90deg,
+		var(--wp--preset--color--surface) 25%,
+		rgba(201, 168, 76, 0.05) 50%,
+		var(--wp--preset--color--surface) 75%
+	);
+	background-size: 200% 100%;
+	animation: kaira-shimmer 1.5s infinite;
+}
 
-/* ==========================================================================
-   7. Lightbox
-   ========================================================================== */
+@keyframes kaira-shimmer {
+	0% { background-position: 200% 0; }
+	100% { background-position: -200% 0; }
+}
 
 .kaira-lightbox {
 	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
+	inset: 0;
 	z-index: 9999;
-	background: rgba(10, 10, 10, 0.95);
+	background: rgba(5, 5, 5, 0.97);
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
 	display: none;
 	align-items: center;
 	justify-content: center;
@@ -470,68 +782,170 @@ body .kaira-hero-meta span + span::before {
 	color: var(--wp--preset--color--accent);
 }
 
-
-/* ==========================================================================
-   8. Newsletter
-   ========================================================================== */
-
-.kaira-newsletter {
-	background: var(--wp--preset--color--surface);
-	text-align: center;
-	padding: 5rem;
-	max-width: 700px;
-	margin: 0 auto;
+.kaira-lightbox-nav {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	background: none;
+	border: none;
+	color: var(--wp--preset--color--heading);
+	font-size: 2rem;
+	cursor: pointer;
+	padding: 1rem;
+	transition: color 0.3s ease;
 }
 
-.kaira-newsletter input[type="email"] {
-	background: var(--wp--preset--color--background);
-	border: 1px solid var(--wp--preset--color--muted);
-	color: var(--wp--preset--color--text);
-	padding: 0.875rem;
-	font-size: 1rem;
-	width: 100%;
-	transition: border-color 0.3s ease;
+.kaira-lightbox-nav:hover {
+	color: var(--wp--preset--color--accent);
 }
 
-.kaira-newsletter input[type="email"]:focus {
-	border-color: var(--wp--preset--color--accent);
-	outline: none;
+.kaira-lightbox-prev { left: 2rem; }
+.kaira-lightbox-next { right: 2rem; }
+
+.kaira-lightbox-counter {
+	position: absolute;
+	bottom: 2rem;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 0.875rem;
+	color: var(--wp--preset--color--muted);
+	letter-spacing: 0.1em;
 }
-
-
-/* ==========================================================================
-   9. Gallery Filters
-   ========================================================================== */
 
 .kaira-filter-bar {
+	position: sticky;
+	top: 80px;
+	z-index: 100;
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
 	gap: 0.5rem;
+	padding: 1rem 2rem;
+	background: var(--kaira-glass-bg);
+	backdrop-filter: blur(var(--kaira-glass-blur));
+	-webkit-backdrop-filter: blur(var(--kaira-glass-blur));
+	border-bottom: 1px solid var(--kaira-glass-border);
 }
 
 .kaira-filter-btn {
 	background: transparent;
-	border: 1px solid var(--wp--preset--color--muted);
+	border: none;
 	color: var(--wp--preset--color--muted);
 	font-size: 0.75rem;
 	text-transform: uppercase;
-	letter-spacing: 0.1em;
+	letter-spacing: 0.15em;
 	padding: 0.5rem 1rem;
 	cursor: pointer;
-	transition: border-color 0.3s ease, color 0.3s ease;
+	position: relative;
+	transition: color 0.3s ease;
+}
+
+.kaira-filter-btn::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	width: 0;
+	height: 1px;
+	background: var(--wp--preset--color--accent);
+	transition: width 0.3s ease, left 0.3s ease;
 }
 
 .kaira-filter-btn:hover,
 .kaira-filter-btn.active {
-	border-color: var(--wp--preset--color--accent);
 	color: var(--wp--preset--color--accent);
+}
+
+.kaira-filter-btn.active::after {
+	width: 100%;
+	left: 0;
+}
+
+@media (max-width: 900px) {
+	.kaira-gallery-masonry { columns: 2; }
+}
+
+@media (max-width: 600px) {
+	.kaira-gallery-masonry { columns: 1; }
 }
 
 
 /* ==========================================================================
-   10. Footer Social
+   11. Newsletter
    ========================================================================== */
+
+.kaira-newsletter {
+	text-align: center;
+	padding: 5rem 2rem;
+	position: relative;
+}
+
+.kaira-newsletter::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 600px;
+	height: 400px;
+	transform: translate(-50%, -50%);
+	background: radial-gradient(ellipse, var(--kaira-accent-subtle) 0%, transparent 70%);
+	pointer-events: none;
+	z-index: 0;
+}
+
+.kaira-newsletter > * {
+	position: relative;
+	z-index: 1;
+}
+
+.kaira-input-underline {
+	background: transparent;
+	border: none;
+	border-bottom: 1px solid var(--wp--preset--color--muted);
+	color: var(--wp--preset--color--text);
+	padding: 0.875rem 0;
+	font-size: 1rem;
+	width: 100%;
+	max-width: 400px;
+	outline: none;
+	transition: border-color 0.3s ease;
+}
+
+.kaira-input-underline:focus {
+	border-bottom-color: var(--wp--preset--color--accent);
+}
+
+.kaira-input-wrapper {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	max-width: 400px;
+}
+
+.kaira-input-wrapper::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	width: 0;
+	height: 2px;
+	background: var(--wp--preset--color--accent);
+	transition: width 0.3s ease, left 0.3s ease;
+}
+
+.kaira-input-wrapper:focus-within::after {
+	width: 100%;
+	left: 0;
+}
+
+
+/* ==========================================================================
+   12. Footer
+   ========================================================================== */
+
+body .kaira-footer {
+	position: relative;
+}
 
 .kaira-footer-social a {
 	display: inline-flex;
@@ -541,41 +955,263 @@ body .kaira-hero-meta span + span::before {
 	height: 40px;
 	color: var(--wp--preset--color--muted);
 	text-decoration: none;
-	transition: color 0.3s ease;
+	transition: color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .kaira-footer-social a:hover {
+	color: var(--wp--preset--color--accent);
+	box-shadow: 0 0 20px var(--kaira-accent-subtle);
+}
+
+.kaira-back-to-top {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	color: var(--wp--preset--color--muted);
+	text-decoration: none;
+	transition: color 0.3s ease;
+	cursor: pointer;
+	background: none;
+	border: none;
+}
+
+.kaira-back-to-top:hover {
 	color: var(--wp--preset--color--accent);
 }
 
 
 /* ==========================================================================
-   11. Scroll Animations
+   13. Inner Pages
    ========================================================================== */
 
-.kaira-fade-in {
-	opacity: 0;
-	transform: translateY(20px);
-	transition: opacity 0.6s ease, transform 0.6s ease;
+.kaira-single-content > p:first-of-type::first-letter {
+	float: left;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 4rem;
+	line-height: 0.8;
+	padding-right: 0.75rem;
+	padding-top: 0.25rem;
+	color: var(--wp--preset--color--accent);
 }
 
-.kaira-fade-in.visible {
-	opacity: 1;
-	transform: translateY(0);
+.kaira-single-content blockquote {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 1.5rem;
+	line-height: 1.4;
+	font-style: italic;
+	border-left: 3px solid var(--wp--preset--color--accent);
+	padding: 1.5rem 2rem;
+	margin: 3rem -5rem;
+	color: var(--wp--preset--color--heading);
+}
+
+.kaira-timeline-item {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 4rem;
+	align-items: center;
+	padding: 4rem 0;
+}
+
+.kaira-timeline-item:nth-child(even) {
+	direction: rtl;
+}
+
+.kaira-timeline-item:nth-child(even) > * {
+	direction: ltr;
+}
+
+.kaira-stat {
+	text-align: center;
+}
+
+.kaira-stat-number {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: clamp(2.5rem, 5vw, 4rem);
+	font-weight: 600;
+	color: var(--wp--preset--color--accent);
+	line-height: 1;
+}
+
+.kaira-stat-label {
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	color: var(--wp--preset--color--muted);
+	margin-top: 0.5rem;
+}
+
+.kaira-archive-grid {
+	display: grid;
+	gap: 2rem;
+}
+
+.kaira-archive-grid .kaira-archive-row--2 {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2rem;
+}
+
+.kaira-archive-grid .kaira-archive-row--3 {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 2rem;
+}
+
+.kaira-hero-glass-panel {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 3rem 2rem;
+	background: linear-gradient(transparent, var(--kaira-glass-bg));
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	z-index: 3;
 }
 
 
 /* ==========================================================================
-   12. WooCommerce Overrides
+   14. Micro-Interactions
+   ========================================================================== */
+
+body .wp-block-button__link {
+	transition: background var(--kaira-transition-smooth),
+	            color var(--kaira-transition-smooth),
+	            transform 0.2s ease;
+}
+
+body .wp-block-button__link:hover {
+	transform: translateY(-2px);
+}
+
+.kaira-glass:hover {
+	border-color: rgba(201, 168, 76, 0.3);
+}
+
+.kaira-scroll-skew {
+	transition: transform 0.2s ease;
+}
+
+.kaira-scroll-skew.is-scrolling {
+	transform: skewY(1deg);
+}
+
+
+/* ==========================================================================
+   15. Custom Cursor
+   ========================================================================== */
+
+.kaira-cursor {
+	position: fixed;
+	width: 8px;
+	height: 8px;
+	background: var(--wp--preset--color--accent);
+	border-radius: 50%;
+	pointer-events: none;
+	z-index: 99999;
+	mix-blend-mode: difference;
+	transform: translate(-50%, -50%);
+	transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
+	will-change: transform;
+}
+
+.kaira-cursor.is-hovering {
+	width: 40px;
+	height: 40px;
+	background: rgba(201, 168, 76, 0.15);
+	border: 1px solid var(--wp--preset--color--accent);
+}
+
+@media (hover: none) {
+	.kaira-cursor { display: none; }
+}
+
+
+/* ==========================================================================
+   16. SVG Animated Dividers
+   ========================================================================== */
+
+.kaira-divider-svg {
+	width: 100%;
+	height: 20px;
+	margin: 3rem auto;
+}
+
+.kaira-divider-svg path {
+	stroke: var(--wp--preset--color--accent);
+	stroke-width: 1.5;
+	fill: none;
+	stroke-dasharray: 400;
+	stroke-dashoffset: 400;
+	animation: kaira-draw-line linear both;
+	animation-timeline: view();
+	animation-range: entry 0% entry 60%;
+	filter: drop-shadow(0 0 4px var(--kaira-accent-glow));
+}
+
+@keyframes kaira-draw-line {
+	from { stroke-dashoffset: 400; }
+	to { stroke-dashoffset: 0; }
+}
+
+.kaira-divider {
+	width: 60px;
+	height: 1px;
+	background: var(--wp--preset--color--accent);
+	margin: 2rem auto;
+	border: none;
+}
+
+
+/* ==========================================================================
+   17. View Transitions
+   ========================================================================== */
+
+@view-transition {
+	navigation: auto;
+}
+
+.kaira-header {
+	view-transition-name: header;
+}
+
+::view-transition-old(header),
+::view-transition-new(header) {
+	animation: none;
+}
+
+.kaira-card-image img {
+	view-transition-name: var(--vt-name, none);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation-duration: 0.3s;
+}
+
+
+/* ==========================================================================
+   18. WooCommerce Overrides
    ========================================================================== */
 
 .wc-block-grid__product {
 	background: var(--wp--preset--color--surface);
 	overflow: hidden;
+	transition: transform var(--kaira-transition-smooth),
+	            box-shadow var(--kaira-transition-smooth);
+}
+
+.wc-block-grid__product:hover {
+	transform: translateY(-8px);
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
 .wc-block-grid__product img {
-	transition: transform 0.4s ease;
+	transition: transform 0.6s ease;
 }
 
 .wc-block-grid__product:hover img {
@@ -586,17 +1222,109 @@ body .kaira-hero-meta span + span::before {
 	border-radius: 0;
 }
 
+.kaira-badge {
+	display: inline-block;
+	background: var(--kaira-rose);
+	color: var(--wp--preset--color--heading);
+	font-size: 0.625rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	padding: 0.2rem 0.6rem;
+}
+
 
 /* ==========================================================================
-   13. Reduced Motion
+   19. Responsive
    ========================================================================== */
 
-/* --- Reduced Motion --- */
+@media (max-width: 1024px) {
+	.kaira-scene-intro {
+		grid-template-columns: 1fr;
+	}
+
+	.kaira-scene-intro-image {
+		height: 50vh;
+	}
+
+	.kaira-scene-intro-text {
+		padding: 3rem 2rem;
+	}
+
+	.kaira-journal-grid {
+		grid-template-columns: 1fr;
+		grid-template-rows: auto;
+	}
+
+	.kaira-journal-grid .kaira-card--featured {
+		grid-row: auto;
+	}
+
+	.kaira-timeline-item {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+
+	.kaira-timeline-item:nth-child(even) {
+		direction: ltr;
+	}
+
+	.kaira-single-content blockquote {
+		margin: 2rem 0;
+	}
+}
+
+@media (max-width: 768px) {
+	.kaira-hero-title {
+		font-size: clamp(2rem, 10vw, 4rem);
+	}
+
+	.kaira-destination-card {
+		width: 85vw;
+	}
+
+	.kaira-card-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.kaira-archive-grid .kaira-archive-row--2,
+	.kaira-archive-grid .kaira-archive-row--3 {
+		grid-template-columns: 1fr;
+	}
+
+	.kaira-scene-split {
+		grid-template-rows: auto auto;
+	}
+}
+
+@media (max-width: 480px) {
+	.kaira-scene-intro-text {
+		padding: 2rem 1rem;
+	}
+
+	.kaira-hero-subtitle {
+		padding: 0.75rem 1.5rem;
+		font-size: 0.9rem;
+	}
+}
+
+
+/* ==========================================================================
+   20. Reduced Motion
+   ========================================================================== */
+
 @media (prefers-reduced-motion: reduce) {
 	*,
 	*::before,
 	*::after {
 		animation-duration: 0.01ms !important;
+		animation-delay: 0ms !important;
 		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
 	}
+
+	.kaira-cursor { display: none; }
+	body::before { display: none; }
+	.kaira-ambient-glow { display: none; }
+	.kaira-cinematic { scroll-snap-type: none; }
 }
