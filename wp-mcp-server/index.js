@@ -64,7 +64,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   // Add availability notes to AI tool descriptions if not configured
   const tools = allTools.map((tool) => {
     // Gemini-specific tool
-    if (tool.name === "generate_recipe_image") {
+    if (tool.name === "generate_destination_image") {
       if (!isGeminiAvailable()) {
         return {
           ...tool,
@@ -114,7 +114,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
 
     // Try AI tools
-    if (name.startsWith("generate_") || name === "list_kaira_presets") {
+    if (name.startsWith("generate_") || name === "list_kaira_presets" || name === "list_destination_presets") {
       const result = await handleAITool(name, args);
       if (result) return result;
     }

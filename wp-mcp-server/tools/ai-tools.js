@@ -1,15 +1,11 @@
 /**
  * AI Content Generation Tools for MCP Server
+ * Travel & Lifestyle focused — generates blog posts, descriptions, SEO, and images.
  */
 
 import { generateContent, generateJSON, isAIAvailable } from "../lib/ai-client.js";
-import {
-  generateAndSaveImage,
-  buildFoodPhotoPrompt,
-  isGeminiAvailable,
-} from "../lib/gemini-client.js";
-import { uploadMedia } from "../lib/wp-client.js";
-import { wpRequestSimple } from "../lib/wp-client.js";
+import { generateAndSaveImage, isGeminiAvailable } from "../lib/gemini-client.js";
+import { uploadMedia, wpRequestSimple } from "../lib/wp-client.js";
 import { getPrompts } from "../prompts/system-prompts.js";
 import path from "path";
 import {
@@ -22,6 +18,11 @@ import {
   KAIRA_NEGATIVE_PROMPT,
   KAIRA_PRESETS,
 } from "../prompts/kaira-presets.js";
+import {
+  buildDestinationPrompt,
+  listDestinationPresets,
+  DESTINATION_PRESETS,
+} from "../prompts/destination-presets.js";
 import { REPLICATE_CONFIG } from "../lib/config.js";
 
 // Load prompts (supports custom prompts via CUSTOM_PROMPTS_PATH env var)
@@ -32,174 +33,164 @@ const PROMPTS = await getPrompts();
  */
 export const aiToolDefinitions = [
   {
-    name: "generate_recipe_post",
+    name: "generate_travel_post",
     description:
-      "Generate a full blog post for a recipe with cultural narrative, personal stories, and structured content. Requires ANTHROPIC_API_KEY environment variable.",
+      "Generate a full travel blog post with Kaira's voice — first-person luxury travel narrative with sensory detail. Requires ANTHROPIC_API_KEY.",
     inputSchema: {
       type: "object",
       properties: {
-        recipe_name: {
+        destination: {
           type: "string",
-          description: "Name of the dish",
+          description: "Destination name (e.g., 'Santorini', 'Tokyo', 'Tulum')",
         },
-        recipe_data: {
-          type: "object",
-          description: "Optional: existing recipe data (ingredients, instructions) to incorporate",
+        topic: {
+          type: "string",
+          description: "Post angle (e.g., 'hidden gems', 'luxury hotels', 'nightlife', 'weekend guide')",
         },
         focus_points: {
           type: "array",
           items: { type: "string" },
-          description: "Optional: specific aspects to emphasize (e.g., history, technique, family tradition)",
+          description: "Specific aspects to emphasize",
         },
         word_count: {
           type: "number",
-          description: "Target word count for the post (default 1500)",
+          description: "Target word count (default 1500)",
           default: 1500,
         },
       },
-      required: ["recipe_name"],
+      required: ["destination"],
     },
   },
   {
-    name: "generate_recipe_description",
+    name: "generate_destination_description",
     description:
-      "Generate a cultural story/description for a recipe card (150-300 words). Focuses on the cultural significance and sensory experience.",
+      "Generate a 150-300 word destination description for post excerpts or cards. Requires ANTHROPIC_API_KEY.",
     inputSchema: {
       type: "object",
       properties: {
-        recipe_name: {
+        destination: {
           type: "string",
-          description: "Name of the dish",
-        },
-        ingredients_summary: {
-          type: "string",
-          description: "Brief summary of main ingredients",
+          description: "Destination name",
         },
         context: {
           type: "string",
-          description: "Optional: additional context (occasion, tradition, personal connection)",
+          description: "Context (e.g., 'weekend getaway', 'honeymoon', 'solo travel')",
         },
       },
-      required: ["recipe_name"],
-    },
-  },
-  {
-    name: "generate_recipe_from_name",
-    description:
-      "Generate a complete recipe data structure from just a dish name. Returns structured JSON with ingredients, instructions, nutrition estimates, and cultural description.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        dish_name: {
-          type: "string",
-          description: "Name of the dish",
-        },
-        servings: {
-          type: "number",
-          description: "Number of servings (default 6)",
-          default: 6,
-        },
-        difficulty: {
-          type: "string",
-          enum: ["easy", "medium", "advanced"],
-          description: "Recipe difficulty level",
-          default: "medium",
-        },
-        notes: {
-          type: "string",
-          description: "Optional: specific requests or variations",
-        },
-      },
-      required: ["dish_name"],
+      required: ["destination"],
     },
   },
   {
     name: "generate_seo_content",
     description:
-      "Generate SEO-optimized metadata for a recipe post including meta title, description, excerpt, and keywords.",
+      "Generate SEO-optimized metadata for a travel blog post including meta title, description, excerpt, and keywords. Requires ANTHROPIC_API_KEY.",
     inputSchema: {
       type: "object",
       properties: {
-        recipe_name: {
+        post_title: {
           type: "string",
-          description: "Name of the recipe",
+          description: "Blog post title",
         },
-        recipe_description: {
+        post_description: {
           type: "string",
-          description: "Brief description of the recipe",
+          description: "Brief description of the post",
         },
-        main_ingredients: {
-          type: "array",
-          items: { type: "string" },
-          description: "List of main ingredients",
+        destination: {
+          type: "string",
+          description: "Destination featured in the post",
         },
         category: {
           type: "string",
-          description: "Recipe category (e.g., Main Dish, Appetizer)",
+          description: "Post category (e.g., 'Destinations', 'Travel Tips', 'Luxury Hotels')",
         },
       },
-      required: ["recipe_name"],
+      required: ["post_title"],
     },
   },
   {
     name: "generate_image_prompt",
     description:
-      "Generate a detailed prompt for AI image generation (Imagen/DALL-E) to create professional food photography.",
+      "Generate a detailed prompt for AI image generation to create cinematic destination photography (no people). Requires ANTHROPIC_API_KEY.",
     inputSchema: {
       type: "object",
       properties: {
-        dish_name: {
+        destination: {
           type: "string",
-          description: "Name of the dish",
+          description: "Destination or scene to describe",
         },
-        dish_description: {
+        scene_description: {
           type: "string",
-          description: "Brief description of how the dish looks",
-        },
-        serving_style: {
-          type: "string",
-          description: "Optional: specific serving style (traditional, modern, family-style)",
+          description: "Brief description of the desired scene",
         },
         mood: {
           type: "string",
-          description: "Optional: mood/atmosphere (rustic, elegant, casual)",
+          description: "Desired mood (e.g., 'romantic', 'dramatic', 'serene')",
+        },
+        time_of_day: {
+          type: "string",
+          description: "Time of day (e.g., 'golden hour', 'blue hour', 'midnight')",
         },
       },
-      required: ["dish_name"],
+      required: ["destination"],
     },
   },
   {
-    name: "generate_recipe_image",
+    name: "generate_destination_image",
     description:
-      "Generate a professional food photography image for a recipe using Google Imagen AI. Saves locally and optionally uploads to WordPress media library and sets as featured image. Requires GEMINI_API_KEY environment variable.",
+      "Generate cinematic destination/scenery photography using Google Imagen AI (no people). " +
+      "Saves locally and optionally uploads to WordPress. Requires GEMINI_API_KEY.",
     inputSchema: {
       type: "object",
       properties: {
-        dish_name: {
+        destination: {
           type: "string",
-          description: "Name of the dish to photograph",
+          description: "Destination or scene to photograph",
+        },
+        preset: {
+          type: "string",
+          description: "Scene preset (use list_destination_presets to see options)",
+        },
+        scene_description: {
+          type: "string",
+          description: "Custom scene description (combined with preset if both provided)",
         },
         filename: {
           type: "string",
-          description: "Output filename without extension (e.g., 'huli-huli-chicken')",
+          description: "Output filename without extension",
         },
-        style: { type: "string", description: "Photography style (default: 'professional food photography')" },
-        lighting: { type: "string", description: "Lighting style (default: 'natural window light')" },
-        angle: { type: "string", description: "Camera angle (default: '45-degree angle')" },
-        background: { type: "string", description: "Background description (default: 'rustic wooden table')" },
-        mood: { type: "string", description: "Image mood (default: 'warm, inviting, appetizing')" },
-        additional_details: { type: "string", description: "Any additional details for the prompt" },
+        lighting: {
+          type: "string",
+          description: "Lighting style (default: from preset or 'golden hour')",
+        },
+        mood: {
+          type: "string",
+          description: "Image mood (default: 'cinematic, warm, editorial')",
+        },
+        time_of_day: {
+          type: "string",
+          description: "Time of day (e.g., 'sunset', 'blue hour', 'midday')",
+        },
         upload_to_wordpress: {
           type: "boolean",
-          description: "Upload generated image to WordPress media library (default: true)",
+          description: "Upload to WordPress media library (default: true)",
           default: true,
         },
         post_id: {
           type: "number",
-          description: "Optional: Post ID to set this image as featured image",
+          description: "Optional: Post ID to set as featured image",
         },
       },
-      required: ["dish_name", "filename"],
+      required: ["filename"],
+    },
+  },
+  {
+    name: "list_destination_presets",
+    description:
+      "List all available destination scene presets for image generation. " +
+      "Use with generate_destination_image.",
+    inputSchema: {
+      type: "object",
+      properties: {},
     },
   },
   {
@@ -318,13 +309,13 @@ function requireReplicate() {
  */
 export async function handleAITool(name, args) {
   switch (name) {
-    case "generate_recipe_post": {
+    case "generate_travel_post": {
       requireAI();
 
-      let userPrompt = `Generate a full blog post for: ${args.recipe_name}`;
+      let userPrompt = `Generate a full travel blog post about: ${args.destination}`;
 
-      if (args.recipe_data) {
-        userPrompt += `\n\nExisting recipe data to incorporate:\n${JSON.stringify(args.recipe_data, null, 2)}`;
+      if (args.topic) {
+        userPrompt += `\n\nPost angle/topic: ${args.topic}`;
       }
 
       if (args.focus_points && args.focus_points.length > 0) {
@@ -333,7 +324,7 @@ export async function handleAITool(name, args) {
 
       userPrompt += `\n\nTarget length: approximately ${args.word_count || 1500} words.`;
 
-      const content = await generateContent(PROMPTS.RECIPE_POST_PROMPT, userPrompt, {
+      const content = await generateContent(PROMPTS.TRAVEL_POST_PROMPT, userPrompt, {
         maxTokens: 8192,
       });
 
@@ -343,7 +334,7 @@ export async function handleAITool(name, args) {
             type: "text",
             text: JSON.stringify(
               {
-                recipe_name: args.recipe_name,
+                destination: args.destination,
                 generated_content: content,
                 word_count: content.split(/\s+/).length,
                 note: "Content is in HTML format. Use for wp_create_post content field.",
@@ -356,18 +347,15 @@ export async function handleAITool(name, args) {
       };
     }
 
-    case "generate_recipe_description": {
+    case "generate_destination_description": {
       requireAI();
 
-      let userPrompt = `Generate a recipe description for: ${args.recipe_name}`;
-      if (args.ingredients_summary) {
-        userPrompt += `\n\nMain ingredients: ${args.ingredients_summary}`;
-      }
+      let userPrompt = `Generate a destination description for: ${args.destination}`;
       if (args.context) {
-        userPrompt += `\n\nAdditional context: ${args.context}`;
+        userPrompt += `\n\nContext: ${args.context}`;
       }
 
-      const description = await generateContent(PROMPTS.RECIPE_DESCRIPTION_PROMPT, userPrompt);
+      const description = await generateContent(PROMPTS.DESTINATION_DESCRIPTION_PROMPT, userPrompt);
 
       return {
         content: [
@@ -375,43 +363,10 @@ export async function handleAITool(name, args) {
             type: "text",
             text: JSON.stringify(
               {
-                recipe_name: args.recipe_name,
+                destination: args.destination,
                 description: description.trim(),
                 word_count: description.split(/\s+/).length,
-                note: "Use for recipe_create description field.",
-              },
-              null,
-              2
-            ),
-          },
-        ],
-      };
-    }
-
-    case "generate_recipe_from_name": {
-      requireAI();
-
-      let userPrompt = `Generate a complete recipe for: ${args.dish_name}`;
-      userPrompt += `\n\nServings: ${args.servings || 6}`;
-      userPrompt += `\nDifficulty: ${args.difficulty || "medium"}`;
-
-      if (args.notes) {
-        userPrompt += `\n\nSpecial requests: ${args.notes}`;
-      }
-
-      const recipeData = await generateJSON(PROMPTS.RECIPE_FROM_NAME_PROMPT, userPrompt, {
-        maxTokens: 8192,
-      });
-
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(
-              {
-                dish_name: args.dish_name,
-                recipe: recipeData,
-                note: "Use this data with recipe_create to create the recipe in WordPress.",
+                note: "Use for post excerpt or destination card description.",
               },
               null,
               2
@@ -424,12 +379,12 @@ export async function handleAITool(name, args) {
     case "generate_seo_content": {
       requireAI();
 
-      let userPrompt = `Generate SEO content for: ${args.recipe_name}`;
-      if (args.recipe_description) {
-        userPrompt += `\n\nDescription: ${args.recipe_description}`;
+      let userPrompt = `Generate SEO content for: ${args.post_title}`;
+      if (args.post_description) {
+        userPrompt += `\n\nDescription: ${args.post_description}`;
       }
-      if (args.main_ingredients && args.main_ingredients.length > 0) {
-        userPrompt += `\n\nMain ingredients: ${args.main_ingredients.join(", ")}`;
+      if (args.destination) {
+        userPrompt += `\n\nDestination: ${args.destination}`;
       }
       if (args.category) {
         userPrompt += `\n\nCategory: ${args.category}`;
@@ -443,7 +398,7 @@ export async function handleAITool(name, args) {
             type: "text",
             text: JSON.stringify(
               {
-                recipe_name: args.recipe_name,
+                post_title: args.post_title,
                 seo: seoData,
                 note: "Use meta_title and meta_description for Yoast/Rank Math SEO plugin. Use excerpt for post excerpt.",
               },
@@ -458,15 +413,15 @@ export async function handleAITool(name, args) {
     case "generate_image_prompt": {
       requireAI();
 
-      let userPrompt = `Generate an image prompt for professional food photography of: ${args.dish_name}`;
-      if (args.dish_description) {
-        userPrompt += `\n\nDish description: ${args.dish_description}`;
-      }
-      if (args.serving_style) {
-        userPrompt += `\n\nServing style: ${args.serving_style}`;
+      let userPrompt = `Generate an image prompt for cinematic destination photography of: ${args.destination}`;
+      if (args.scene_description) {
+        userPrompt += `\n\nScene description: ${args.scene_description}`;
       }
       if (args.mood) {
         userPrompt += `\n\nDesired mood: ${args.mood}`;
+      }
+      if (args.time_of_day) {
+        userPrompt += `\n\nTime of day: ${args.time_of_day}`;
       }
 
       const imageData = await generateJSON(PROMPTS.IMAGE_PROMPT_TEMPLATE, userPrompt);
@@ -477,9 +432,9 @@ export async function handleAITool(name, args) {
             type: "text",
             text: JSON.stringify(
               {
-                dish_name: args.dish_name,
+                destination: args.destination,
                 image_prompt: imageData,
-                note: "Use the 'prompt' field with Imagen or DALL-E for image generation.",
+                note: "Use the 'prompt' field with generate_destination_image or other image generation tools.",
               },
               null,
               2
@@ -489,22 +444,38 @@ export async function handleAITool(name, args) {
       };
     }
 
-    case "generate_recipe_image": {
+    case "generate_destination_image": {
       requireGemini();
 
-      const prompt = buildFoodPhotoPrompt(args.dish_name, {
-        style: args.style,
-        lighting: args.lighting,
-        angle: args.angle,
-        background: args.background,
-        mood: args.mood,
-        additionalDetails: args.additional_details,
-      });
+      // Validate preset if provided
+      if (args.preset && !DESTINATION_PRESETS[args.preset]) {
+        const validPresets = Object.keys(DESTINATION_PRESETS).join(", ");
+        throw new Error(
+          `Unknown preset '${args.preset}'. Valid presets: ${validPresets}`
+        );
+      }
+
+      // Build the scene description — use destination as fallback if no preset or scene_description
+      let sceneDescription = args.scene_description || null;
+      if (args.destination && !args.preset && !sceneDescription) {
+        sceneDescription = args.destination;
+      }
+
+      const prompt = buildDestinationPrompt(
+        args.preset || null,
+        sceneDescription,
+        {
+          lighting: args.lighting,
+          mood: args.mood,
+          timeOfDay: args.time_of_day,
+        }
+      );
 
       const imagePath = await generateAndSaveImage(prompt, args.filename);
 
       const result = {
-        dish_name: args.dish_name,
+        destination: args.destination || null,
+        preset: args.preset || null,
         prompt_used: prompt,
         local_path: imagePath,
         uploaded: false,
@@ -534,6 +505,26 @@ export async function handleAITool(name, args) {
           {
             type: "text",
             text: JSON.stringify(result, null, 2),
+          },
+        ],
+      };
+    }
+
+    case "list_destination_presets": {
+      const presets = listDestinationPresets();
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              {
+                presets,
+                usage: "Use a preset name with generate_destination_image's 'preset' parameter.",
+                note: "You can also provide a custom 'scene_description' with or without a preset.",
+              },
+              null,
+              2
+            ),
           },
         ],
       };
