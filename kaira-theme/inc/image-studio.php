@@ -178,20 +178,13 @@ class Kaira_Image_Studio {
         $preset  = sanitize_text_field( $_POST['preset'] ?? '' );
         $prompt  = sanitize_textarea_field( $_POST['prompt'] ?? '' );
 
-        // Build the full prompt.
-        $full_prompt = $this->get_identity_prompt();
-
-        if ( $preset && $this->get_preset_prompt( $preset ) ) {
-            $full_prompt .= ' ' . $this->get_preset_prompt( $preset );
-        }
-
-        if ( $prompt ) {
-            $full_prompt .= ' ' . $prompt;
-        }
-
         if ( ! $preset && ! $prompt ) {
             wp_send_json_error( array( 'message' => 'Please select a preset or enter a scene description.' ) );
         }
+
+        // Build the full prompt using the canonical prompt builder.
+        $trigger     = defined( 'KAIRA_TRIGGER_TOKEN' ) ? KAIRA_TRIGGER_TOKEN : 'KAIRA';
+        $full_prompt = kaira_build_prompt( $trigger, $preset ?: null, $prompt ?: null );
 
         $model_version = get_option( 'kaira_replicate_model_version', '' );
         if ( empty( $model_version ) ) {
@@ -200,7 +193,7 @@ class Kaira_Image_Studio {
 
         $input = array(
             'prompt'          => $full_prompt,
-            'negative_prompt' => $this->get_negative_prompt(),
+            'negative_prompt' => kaira_get_negative_prompt(),
             'width'           => 1024,
             'height'          => 1536,
             'num_outputs'     => 1,
@@ -274,36 +267,6 @@ class Kaira_Image_Studio {
         ) );
     }
 
-    /**
-     * Return Kaira's identity description for prompt building.
-     *
-     * @return string
-     */
-    private function get_identity_prompt(): string {
-        return kaira_get_base_prompt(
-            defined( 'KAIRA_TRIGGER_TOKEN' ) ? KAIRA_TRIGGER_TOKEN : 'KAIRA'
-        );
-    }
-
-    /**
-     * Return the negative prompt used for all generations.
-     *
-     * @return string
-     */
-    private function get_negative_prompt(): string {
-        return kaira_get_negative_prompt();
-    }
-
-    /**
-     * Return a scene-specific prompt for the given preset.
-     *
-     * @param string $preset Preset key.
-     * @return string Prompt text, or empty string if unknown.
-     */
-    private function get_preset_prompt( string $preset ): string {
-        $presets = kaira_get_presets();
-        return $presets[ $preset ]['scene'] ?? '';
-    }
 
     /**
      * Register the Replicate model version setting on the General Settings page.
