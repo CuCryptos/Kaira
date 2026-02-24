@@ -56,3 +56,8 @@ require get_template_directory() . '/inc/replicate-api.php';
 if ( class_exists( 'WooCommerce' ) ) {
     require get_template_directory() . '/inc/woocommerce.php';
 }
+
+if ( is_admin() ) {
+    require get_template_directory() . '/inc/image-studio.php';
+    new Kaira_Image_Studio();
+}

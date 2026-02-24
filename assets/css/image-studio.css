@@ -1,0 +1,52 @@
+.kaira-studio-wrap {
+    max-width: 1200px;
+}
+
+.kaira-studio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.kaira-studio-form,
+.kaira-studio-preview {
+    background: #fff;
+    padding: 1.5rem;
+    border: 1px solid #c3c4c7;
+}
+
+.kaira-studio-form h2,
+.kaira-studio-preview h2 {
+    margin-top: 0;
+}
+
+.kaira-studio-preview img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+#kaira-preview-actions {
+    display: flex;
+    margin-top: 1rem;
+    gap: 0.5rem;
+}
+
+#kaira-spinner.is-active {
+    visibility: visible;
+}
+
+#kaira-status {
+    margin-top: 1rem;
+}
+
+#kaira-status .notice {
+    margin: 0;
+}
+
+@media screen and (max-width: 960px) {
+    .kaira-studio-grid {
+        grid-template-columns: 1fr;
+    }
+}
