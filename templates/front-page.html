@@ -1,9 +1,21 @@
 <!-- wp:template-part {"slug":"header","area":"header"} /-->
 
-<!-- wp:cover {"dimRatio":60,"overlayColor":"background","minHeight":100,"minHeightUnit":"vh","isDark":true,"className":"kaira-hero","layout":{"type":"constrained","contentSize":"800px"}} -->
-<div class="wp-block-cover is-dark kaira-hero" style="min-height:100vh">
+<!-- wp:cover {"dimRatio":60,"overlayColor":"background","minHeight":100,"minHeightUnit":"vh","isDark":true,"className":"kaira-hero kaira-hero-home","layout":{"type":"constrained","contentSize":"800px"}} -->
+<div class="wp-block-cover is-dark kaira-hero kaira-hero-home" style="min-height:100vh">
 <span aria-hidden="true" class="wp-block-cover__background has-background-background-color has-background-dim-60 has-background-dim"></span>
 <div class="wp-block-cover__inner-container">
+
+<!-- wp:html -->
+<div class="kaira-hero-overlay" aria-hidden="true"></div>
+<span class="kaira-bokeh" style="left:8%;bottom:15%;width:6px;height:6px;--bokeh-duration:16s;--bokeh-delay:0s;--bokeh-opacity:0.12" aria-hidden="true"></span>
+<span class="kaira-bokeh" style="left:25%;bottom:30%;width:4px;height:4px;--bokeh-duration:12s;--bokeh-delay:2s;--bokeh-opacity:0.18" aria-hidden="true"></span>
+<span class="kaira-bokeh" style="left:50%;bottom:10%;width:8px;height:8px;--bokeh-duration:18s;--bokeh-delay:1s;--bokeh-opacity:0.1" aria-hidden="true"></span>
+<span class="kaira-bokeh" style="left:70%;bottom:25%;width:5px;height:5px;--bokeh-duration:14s;--bokeh-delay:3s;--bokeh-opacity:0.2" aria-hidden="true"></span>
+<span class="kaira-bokeh" style="left:85%;bottom:40%;width:4px;height:4px;--bokeh-duration:20s;--bokeh-delay:0.5s;--bokeh-opacity:0.15" aria-hidden="true"></span>
+<span class="kaira-bokeh" style="left:15%;bottom:50%;width:6px;height:6px;--bokeh-duration:15s;--bokeh-delay:4s;--bokeh-opacity:0.1" aria-hidden="true"></span>
+<span class="kaira-bokeh" style="left:40%;bottom:5%;width:7px;height:7px;--bokeh-duration:13s;--bokeh-delay:1.5s;--bokeh-opacity:0.14" aria-hidden="true"></span>
+<span class="kaira-bokeh" style="left:60%;bottom:55%;width:3px;height:3px;--bokeh-duration:17s;--bokeh-delay:2.5s;--bokeh-opacity:0.22" aria-hidden="true"></span>
+<!-- /wp:html -->
 
 <!-- wp:heading {"textAlign":"center","level":1,"style":{"typography":{"fontFamily":"var(--wp--preset--font-family--heading)"},"elements":{"link":{"color":{"text":"var(--wp--preset--color--heading)"}}}},"textColor":"heading","fontSize":"hero"} -->
 <h1 class="wp-block-heading has-text-align-center has-heading-color has-text-color has-hero-font-size" style="font-family:var(--wp--preset--font-family--heading)">Explore With Kaira</h1>
@@ -20,6 +32,12 @@
 <!-- /wp:button -->
 </div>
 <!-- /wp:buttons -->
+
+<!-- wp:html -->
+<div class="kaira-scroll-indicator" aria-hidden="true">
+<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<!-- /wp:html -->
 
 </div>
 </div>
