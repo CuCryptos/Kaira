@@ -20,7 +20,7 @@
 				ticking = true;
 
 				requestAnimationFrame(function () {
-					var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+					var scrollY = window.scrollY;
 
 					if (isHomepage) {
 						// Homepage: transparent until 90% of viewport, then frosted glass
