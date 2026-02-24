@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param string $trigger The LoRA trigger token.
  * @return string
  */
-function kaira_get_base_prompt( string $trigger ): string {
+function kaira_get_base_prompt( string $trigger = 'KAIRA' ): string {
 	return str_replace( '{trigger}', $trigger, 'A photorealistic portrait of {trigger}, a woman in her mid-to-late twenties with an ethnically ambiguous appearance — she could be Mediterranean, Latin, Middle Eastern, or mixed. Dark hair, warm skin tone, striking features. She is always alone in the frame. The style is candid editorial photography — she looks caught in a moment, not posing. Dark and warm color grading, rich shadows, warm highlights, slightly desaturated. The image should feel like a film still, not social media content.' );
 }
 

@@ -87,7 +87,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param string $trigger The LoRA trigger token.
  * @return string
  */
-function kaira_get_base_prompt( string $trigger ): string {
+function kaira_get_base_prompt( string $trigger = 'KAIRA' ): string {
 \treturn str_replace( '{trigger}', $trigger, '${phpEscape(KAIRA_BASE_PROMPT)}' );
 }
 
