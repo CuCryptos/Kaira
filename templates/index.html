@@ -1,9 +1,28 @@
 <!-- wp:template-part {"slug":"header","area":"header"} /-->
 
-<!-- wp:group {"tagName":"main","layout":{"type":"constrained","contentSize":"1200px"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|60"}}}} -->
-<main class="wp-block-group" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--60)">
+<!-- wp:cover {"dimRatio":80,"overlayColor":"background","minHeight":50,"minHeightUnit":"vh","isDark":true,"className":"kaira-hero kaira-hero--50vh","layout":{"type":"constrained","contentSize":"800px"}} -->
+<div class="wp-block-cover is-dark kaira-hero kaira-hero--50vh" style="min-height:50vh">
+<span aria-hidden="true" class="wp-block-cover__background has-background-background-color has-background-dim-80 has-background-dim"></span>
+<div class="wp-block-cover__inner-container">
 
-<!-- wp:query-title {"type":"archive","textAlign":"center","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|50"}}}} /-->
+<!-- wp:html -->
+<div class="kaira-hero-overlay" aria-hidden="true"></div>
+<!-- /wp:html -->
+
+<!-- wp:heading {"textAlign":"center","level":1,"style":{"typography":{"fontFamily":"var(--wp--preset--font-family--heading)"},"elements":{"link":{"color":{"text":"var(--wp--preset--color--heading)"}}}},"textColor":"heading","fontSize":"hero"} -->
+<h1 class="wp-block-heading has-text-align-center has-heading-color has-text-color has-hero-font-size" style="font-family:var(--wp--preset--font-family--heading)">The Journal</h1>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"align":"center","style":{"color":{"text":"var(--wp--preset--color--muted)"}}} -->
+<p class="has-text-align-center has-text-color" style="color:var(--wp--preset--color--muted)">Stories, destinations, and lifestyle inspiration</p>
+<!-- /wp:paragraph -->
+
+</div>
+</div>
+<!-- /wp:cover -->
+
+<!-- wp:group {"tagName":"main","layout":{"type":"constrained","contentSize":"1200px"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}}} -->
+<main class="wp-block-group" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)">
 
 <!-- wp:query {"queryId":2,"query":{"perPage":9,"postType":"post","order":"desc","orderBy":"date"}} -->
 <div class="wp-block-query">
