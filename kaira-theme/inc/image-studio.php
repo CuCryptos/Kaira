@@ -106,14 +106,12 @@ class Kaira_Image_Studio {
                             <td>
                                 <select id="kaira-preset" class="regular-text">
                                     <option value="">-- Custom (use description below) --</option>
-                                    <option value="mykonos_pool">Mykonos Pool</option>
-                                    <option value="paris_night">Paris Night</option>
-                                    <option value="bali_sunset">Bali Sunset</option>
-                                    <option value="dubai_skyline">Dubai Skyline</option>
-                                    <option value="tulum_beach">Tulum Beach</option>
-                                    <option value="amalfi_coast">Amalfi Coast</option>
-                                    <option value="gym_workout">Gym Workout</option>
-                                    <option value="high_fashion">High Fashion</option>
+                                    <?php foreach ( kaira_get_presets() as $key => $preset ) : ?>
+                                        <option value="<?php echo esc_attr( $key ); ?>">
+                                            <?php echo esc_html( ucwords( str_replace( '_', ' ', $key ) ) ); ?>
+                                            — <?php echo esc_html( $preset['description'] ); ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </td>
                         </tr>
@@ -282,7 +280,9 @@ class Kaira_Image_Studio {
      * @return string
      */
     private function get_identity_prompt(): string {
-        return 'A stunning woman named Kaira with radiant tan skin, striking dark eyes, long flowing dark hair, high cheekbones, and a confident elegant expression. She has a fit, graceful figure and exudes luxury and sophistication.';
+        return kaira_get_base_prompt(
+            defined( 'KAIRA_TRIGGER_TOKEN' ) ? KAIRA_TRIGGER_TOKEN : 'KAIRA'
+        );
     }
 
     /**
@@ -291,7 +291,7 @@ class Kaira_Image_Studio {
      * @return string
      */
     private function get_negative_prompt(): string {
-        return 'deformed, distorted, disfigured, poorly drawn, bad anatomy, wrong anatomy, extra limbs, missing limbs, floating limbs, mutated hands, extra fingers, missing fingers, blurry, low quality, watermark, text, signature';
+        return kaira_get_negative_prompt();
     }
 
     /**
@@ -301,18 +301,8 @@ class Kaira_Image_Studio {
      * @return string Prompt text, or empty string if unknown.
      */
     private function get_preset_prompt( string $preset ): string {
-        $presets = array(
-            'mykonos_pool'  => 'Relaxing by an infinity pool in Mykonos, Greece, wearing a designer swimsuit, white-washed buildings in the background, golden hour lighting, Mediterranean luxury.',
-            'paris_night'   => 'Walking down a cobblestone Parisian street at night, wearing an elegant black dress, Eiffel Tower softly lit in the background, warm streetlamp glow, cinematic.',
-            'bali_sunset'   => 'Standing on a cliff overlooking the ocean in Bali at sunset, wearing a flowing white dress, tropical foliage, golden orange sky, serene and majestic.',
-            'dubai_skyline' => 'On a luxury rooftop terrace in Dubai, wearing a glamorous evening gown, Burj Khalifa and city skyline in the background, twilight blue hour, opulent.',
-            'tulum_beach'   => 'On a pristine beach in Tulum, Mexico, wearing a bohemian bikini and sarong, turquoise water, rustic beach cabana, relaxed tropical luxury.',
-            'amalfi_coast'  => 'On a terrace overlooking the Amalfi Coast, wearing a sundress and wide-brimmed hat, colorful Italian coastal village below, bright Mediterranean sunlight.',
-            'gym_workout'   => 'In a high-end modern gym, wearing stylish athletic wear, mid-workout with perfect form, dramatic lighting, fitness and strength.',
-            'high_fashion'  => 'High fashion editorial shoot in a luxury studio, wearing a couture gown, dramatic lighting with shadows, confident powerful pose, fashion magazine quality.',
-        );
-
-        return $presets[ $preset ] ?? '';
+        $presets = kaira_get_presets();
+        return $presets[ $preset ]['scene'] ?? '';
     }
 
     /**

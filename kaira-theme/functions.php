@@ -60,6 +60,7 @@ add_action( 'wp_enqueue_scripts', 'kaira_enqueue_assets' );
 
 require get_template_directory() . '/inc/custom-post-types.php';
 require get_template_directory() . '/inc/replicate-api.php';
+require get_template_directory() . '/inc/kaira-presets-generated.php';
 
 require get_template_directory() . '/inc/woocommerce.php';
 
