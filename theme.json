@@ -1,1 +1,314 @@
-{}
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"settings": {
+		"appearanceTools": true,
+		"useRootPaddingAwareAlignments": true,
+		"layout": {
+			"contentSize": "1200px",
+			"wideSize": "1400px"
+		},
+		"color": {
+			"palette": [
+				{
+					"slug": "background",
+					"color": "#0a0a0a",
+					"name": "Background"
+				},
+				{
+					"slug": "surface",
+					"color": "#141414",
+					"name": "Surface"
+				},
+				{
+					"slug": "accent",
+					"color": "#c9a84c",
+					"name": "Accent"
+				},
+				{
+					"slug": "text",
+					"color": "#f5f0e8",
+					"name": "Text"
+				},
+				{
+					"slug": "heading",
+					"color": "#ffffff",
+					"name": "Heading"
+				},
+				{
+					"slug": "muted",
+					"color": "#8a8275",
+					"name": "Muted"
+				}
+			],
+			"gradients": [
+				{
+					"slug": "dark-overlay",
+					"gradient": "linear-gradient(180deg, transparent 0%, rgba(10,10,10,0.85) 100%)",
+					"name": "Dark Overlay"
+				},
+				{
+					"slug": "gold-shimmer",
+					"gradient": "linear-gradient(135deg, #c9a84c 0%, #e8d48b 50%, #c9a84c 100%)",
+					"name": "Gold Shimmer"
+				}
+			]
+		},
+		"typography": {
+			"fontFamilies": [
+				{
+					"fontFamily": "\"Playfair Display\", serif",
+					"slug": "heading",
+					"name": "Heading",
+					"fontFace": [
+						{
+							"fontFamily": "Playfair Display",
+							"fontWeight": "400 900",
+							"fontStyle": "normal",
+							"fontStretch": "normal",
+							"src": [
+								"file:./assets/fonts/PlayfairDisplay-VariableFont_wght.woff2"
+							]
+						},
+						{
+							"fontFamily": "Playfair Display",
+							"fontWeight": "400 900",
+							"fontStyle": "italic",
+							"fontStretch": "normal",
+							"src": [
+								"file:./assets/fonts/PlayfairDisplay-Italic-VariableFont_wght.woff2"
+							]
+						}
+					]
+				},
+				{
+					"fontFamily": "\"Inter\", sans-serif",
+					"slug": "body",
+					"name": "Body",
+					"fontFace": [
+						{
+							"fontFamily": "Inter",
+							"fontWeight": "100 900",
+							"fontStyle": "normal",
+							"fontStretch": "normal",
+							"src": [
+								"file:./assets/fonts/Inter-VariableFont_slnt_wght.woff2"
+							]
+						}
+					]
+				}
+			],
+			"fontSizes": [
+				{
+					"slug": "small",
+					"size": "0.875rem",
+					"name": "Small"
+				},
+				{
+					"slug": "medium",
+					"size": "1rem",
+					"name": "Medium"
+				},
+				{
+					"slug": "large",
+					"size": "1.25rem",
+					"name": "Large"
+				},
+				{
+					"slug": "x-large",
+					"size": "2rem",
+					"name": "Extra Large"
+				},
+				{
+					"slug": "xx-large",
+					"size": "3.5rem",
+					"name": "Extra Extra Large"
+				},
+				{
+					"slug": "hero",
+					"size": "clamp(2.5rem, 5vw, 5rem)",
+					"name": "Hero"
+				}
+			]
+		},
+		"spacing": {
+			"units": [
+				"px",
+				"rem",
+				"vh",
+				"vw",
+				"%"
+			],
+			"spacingSizes": [
+				{
+					"slug": "10",
+					"size": "0.5rem",
+					"name": "1"
+				},
+				{
+					"slug": "20",
+					"size": "1rem",
+					"name": "2"
+				},
+				{
+					"slug": "30",
+					"size": "1.5rem",
+					"name": "3"
+				},
+				{
+					"slug": "40",
+					"size": "2rem",
+					"name": "4"
+				},
+				{
+					"slug": "50",
+					"size": "3rem",
+					"name": "5"
+				},
+				{
+					"slug": "60",
+					"size": "5rem",
+					"name": "6"
+				},
+				{
+					"slug": "70",
+					"size": "8rem",
+					"name": "7"
+				}
+			]
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "var(--wp--preset--color--background)",
+			"text": "var(--wp--preset--color--text)"
+		},
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--body)",
+			"fontSize": "var(--wp--preset--font-size--medium)",
+			"lineHeight": "1.7"
+		},
+		"spacing": {
+			"padding": {
+				"top": "0",
+				"right": "var(--wp--preset--spacing--30)",
+				"bottom": "0",
+				"left": "var(--wp--preset--spacing--30)"
+			}
+		},
+		"elements": {
+			"heading": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--heading)",
+					"fontWeight": "700",
+					"lineHeight": "1.2"
+				},
+				"color": {
+					"text": "var(--wp--preset--color--heading)"
+				}
+			},
+			"h1": {
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--hero)"
+				}
+			},
+			"h2": {
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--xx-large)"
+				}
+			},
+			"h3": {
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--x-large)"
+				}
+			},
+			"link": {
+				"color": {
+					"text": "var(--wp--preset--color--accent)"
+				},
+				":hover": {
+					"color": {
+						"text": "var(--wp--preset--color--heading)"
+					}
+				}
+			},
+			"button": {
+				"color": {
+					"background": "var(--wp--preset--color--accent)",
+					"text": "var(--wp--preset--color--background)"
+				},
+				"typography": {
+					"textTransform": "uppercase"
+				},
+				"border": {
+					"radius": "0"
+				},
+				":hover": {
+					"color": {
+						"background": "var(--wp--preset--color--heading)",
+						"text": "var(--wp--preset--color--background)"
+					}
+				}
+			}
+		},
+		"blocks": {
+			"core/separator": {
+				"color": {
+					"text": "var(--wp--preset--color--accent)"
+				},
+				"border": {
+					"width": "1px"
+				}
+			},
+			"core/quote": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--heading)",
+					"fontStyle": "italic"
+				},
+				"border": {
+					"left": {
+						"color": "var(--wp--preset--color--accent)",
+						"width": "3px",
+						"style": "solid"
+					}
+				}
+			}
+		}
+	},
+	"templateParts": [
+		{
+			"name": "header",
+			"title": "Header",
+			"area": "header"
+		},
+		{
+			"name": "footer",
+			"title": "Footer",
+			"area": "footer"
+		}
+	],
+	"customTemplates": [
+		{
+			"name": "page-gallery",
+			"title": "Gallery Page",
+			"postTypes": [
+				"page"
+			]
+		},
+		{
+			"name": "page-about",
+			"title": "About Page",
+			"postTypes": [
+				"page"
+			]
+		},
+		{
+			"name": "blank",
+			"title": "Blank",
+			"postTypes": [
+				"page",
+				"post"
+			]
+		}
+	]
+}
