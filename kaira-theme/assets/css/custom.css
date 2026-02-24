@@ -255,6 +255,15 @@ body .kaira-hero-overlay {
 body .kaira-hero .wp-block-cover__inner-container {
 	position: relative;
 	z-index: 3;
+	max-width: none;
+	padding-left: 2rem;
+	padding-right: 2rem;
+}
+
+body .kaira-hero .wp-block-cover__inner-container > * {
+	max-width: 900px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .kaira-hero--80vh { height: 80vh; min-height: 500px; }
@@ -283,7 +292,7 @@ body .kaira-hero-home {
 .kaira-hero-title {
 	font-family: var(--wp--preset--font-family--display);
 	font-weight: 600;
-	font-size: clamp(2.5rem, 5.5vw, 5.5rem);
+	font-size: clamp(2rem, 5vw, 5rem);
 	line-height: 1.0;
 	letter-spacing: -0.02em;
 	color: var(--wp--preset--color--heading);
@@ -476,6 +485,12 @@ body .kaira-hero-meta {
 	display: block;
 	overflow: visible;
 	min-height: auto;
+	scroll-snap-align: none;
+}
+
+body .kaira-scene.wp-block-group .kaira-section-label,
+body .kaira-scene.wp-block-group .kaira-display-font {
+	max-width: none;
 }
 
 .kaira-scene-intro {
@@ -640,6 +655,12 @@ body .kaira-hero-meta {
 	aspect-ratio: 3 / 4;
 }
 
+.kaira-card-image:not(:has(img)) {
+	aspect-ratio: auto;
+	min-height: 200px;
+	background: var(--wp--preset--color--surface);
+}
+
 .kaira-card-image img {
 	width: 100%;
 	height: 100%;
@@ -683,6 +704,14 @@ body .kaira-card-image .wp-block-post-featured-image img {
 
 body .wp-block-post-template .kaira-card {
 	height: 100%;
+}
+
+body .wp-block-post-template.is-layout-grid {
+	gap: 2rem;
+}
+
+body .wp-block-post-template.is-layout-grid > li {
+	margin: 0;
 }
 
 .kaira-card-meta {
@@ -1324,7 +1353,7 @@ body .wp-block-button__link:hover {
 
 @media (max-width: 768px) {
 	.kaira-hero-title {
-		font-size: clamp(2rem, 10vw, 4rem);
+		font-size: clamp(1.75rem, 8vw, 3rem);
 	}
 
 	.kaira-destination-card {

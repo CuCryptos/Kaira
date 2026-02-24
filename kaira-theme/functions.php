@@ -6,7 +6,7 @@
  */
 
 if ( ! defined( 'KAIRA_VERSION' ) ) {
-    define( 'KAIRA_VERSION', '2.0.2' );
+    define( 'KAIRA_VERSION', '2.0.3' );
 }
 
 function kaira_setup() {
