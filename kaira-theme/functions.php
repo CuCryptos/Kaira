@@ -46,6 +46,40 @@ function kaira_enqueue_assets() {
         true
     );
 
+    wp_enqueue_script(
+        'kaira-cursor',
+        get_template_directory_uri() . '/assets/js/cursor.js',
+        array(),
+        KAIRA_VERSION,
+        true
+    );
+
+    wp_enqueue_script(
+        'kaira-tilt',
+        get_template_directory_uri() . '/assets/js/tilt.js',
+        array(),
+        KAIRA_VERSION,
+        true
+    );
+
+    wp_enqueue_script(
+        'kaira-split-text',
+        get_template_directory_uri() . '/assets/js/split-text.js',
+        array(),
+        KAIRA_VERSION,
+        true
+    );
+
+    if ( is_front_page() ) {
+        wp_enqueue_script(
+            'kaira-particles',
+            get_template_directory_uri() . '/assets/js/particles.js',
+            array(),
+            KAIRA_VERSION,
+            true
+        );
+    }
+
     if ( is_page_template( 'page-gallery' ) || is_page( 'gallery' ) ) {
         wp_enqueue_script(
             'kaira-gallery',
