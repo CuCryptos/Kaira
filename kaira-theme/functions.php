@@ -38,6 +38,14 @@ function kaira_enqueue_assets() {
         KAIRA_VERSION
     );
 
+    wp_enqueue_script(
+        'kaira-main',
+        get_template_directory_uri() . '/assets/js/main.js',
+        array(),
+        KAIRA_VERSION,
+        true
+    );
+
     if ( is_page_template( 'page-gallery' ) || is_page( 'gallery' ) ) {
         wp_enqueue_script(
             'kaira-gallery',
