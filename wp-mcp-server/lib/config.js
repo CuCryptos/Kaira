@@ -39,12 +39,6 @@ export const REPLICATE_CONFIG = {
   triggerToken: process.env.KAIRA_TRIGGER_TOKEN || "KAIRA",
 };
 
-// Recipe system configuration (OPTIONAL)
-export const RECIPE_CONFIG = {
-  postType: process.env.RECIPE_POST_TYPE || "",
-  metaPrefix: process.env.RECIPE_META_PREFIX || "_cjc_recipe_",
-};
-
 // Create WordPress auth header
 export const getAuthHeader = () => {
   return (
