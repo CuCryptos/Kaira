@@ -1,38 +1,72 @@
 /**
  * Kaira Theme — Main JS
- * Handles scroll animations and sticky header.
+ * Handles frosted glass header, scroll indicator, and fade-in animations.
  */
 (function () {
-    'use strict';
+	'use strict';
 
-    document.addEventListener('DOMContentLoaded', function () {
-        // --- Sticky Header ---
-        var header = document.querySelector('.kaira-header');
-        if (header) {
-            window.addEventListener('scroll', function () {
-                if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-            }, { passive: true });
-        }
+	document.addEventListener('DOMContentLoaded', function () {
+		var header = document.querySelector('.kaira-header');
+		var scrollIndicator = document.querySelector('.kaira-scroll-indicator');
+		var hero = document.querySelector('.kaira-hero');
+		var isHomepage = !!document.querySelector('.kaira-hero-home');
 
-        // --- Scroll Fade-In Animations ---
-        var fadeElements = document.querySelectorAll('.kaira-fade-in');
-        if (fadeElements.length && 'IntersectionObserver' in window) {
-            var observer = new IntersectionObserver(function (entries) {
-                entries.forEach(function (entry) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
+		// --- Frosted Glass Header ---
+		if (header) {
+			var ticking = false;
 
-            fadeElements.forEach(function (el) {
-                observer.observe(el);
-            });
-        }
-    });
+			window.addEventListener('scroll', function () {
+				if (ticking) return;
+				ticking = true;
+
+				requestAnimationFrame(function () {
+					var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+					if (isHomepage) {
+						// Homepage: transparent until 90% of viewport, then frosted glass
+						var threshold = window.innerHeight * 0.9;
+						if (scrollY > threshold) {
+							header.classList.add('scrolled');
+						} else {
+							header.classList.remove('scrolled');
+						}
+					} else {
+						// Other pages: frosted glass after scrolling past hero or 50px
+						var heroBottom = hero ? hero.offsetHeight : 50;
+						if (scrollY > heroBottom) {
+							header.classList.add('scrolled');
+						} else {
+							header.classList.remove('scrolled');
+						}
+					}
+
+					// Fade out scroll indicator on any scroll
+					if (scrollIndicator && scrollY > 100) {
+						scrollIndicator.classList.add('hidden');
+					} else if (scrollIndicator) {
+						scrollIndicator.classList.remove('hidden');
+					}
+
+					ticking = false;
+				});
+			}, { passive: true });
+		}
+
+		// --- Scroll Fade-In Animations ---
+		var fadeElements = document.querySelectorAll('.kaira-fade-in');
+		if (fadeElements.length && 'IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function (entries) {
+				entries.forEach(function (entry) {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('visible');
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.1 });
+
+			fadeElements.forEach(function (el) {
+				observer.observe(el);
+			});
+		}
+	});
 })();
