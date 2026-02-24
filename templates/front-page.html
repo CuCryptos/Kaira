@@ -1,32 +1,29 @@
 <!-- wp:template-part {"slug":"header","area":"header"} /-->
 
-<!-- wp:cover {"dimRatio":60,"overlayColor":"background","minHeight":100,"minHeightUnit":"vh","isDark":true,"className":"kaira-hero kaira-hero-home","layout":{"type":"constrained","contentSize":"800px"}} -->
-<div class="wp-block-cover is-dark kaira-hero kaira-hero-home" style="min-height:100vh">
-<span aria-hidden="true" class="wp-block-cover__background has-background-background-color has-background-dim-60 has-background-dim"></span>
+<!-- wp:html -->
+<div class="kaira-cinematic">
+<!-- /wp:html -->
+
+<!-- SCENE 1: Hero ================================================== -->
+<!-- wp:cover {"dimRatio":0,"minHeight":100,"minHeightUnit":"vh","isDark":true,"className":"kaira-hero kaira-hero-home kaira-scene","layout":{"type":"constrained","contentSize":"900px"}} -->
+<div class="wp-block-cover is-dark kaira-hero kaira-hero-home kaira-scene" style="min-height:100vh">
+<span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span>
 <div class="wp-block-cover__inner-container">
 
 <!-- wp:html -->
 <div class="kaira-hero-overlay" aria-hidden="true"></div>
-<span class="kaira-bokeh" style="left:8%;bottom:15%;width:6px;height:6px;--bokeh-duration:16s;--bokeh-delay:0s;--bokeh-opacity:0.12" aria-hidden="true"></span>
-<span class="kaira-bokeh" style="left:25%;bottom:30%;width:4px;height:4px;--bokeh-duration:12s;--bokeh-delay:2s;--bokeh-opacity:0.18" aria-hidden="true"></span>
-<span class="kaira-bokeh" style="left:50%;bottom:10%;width:8px;height:8px;--bokeh-duration:18s;--bokeh-delay:1s;--bokeh-opacity:0.1" aria-hidden="true"></span>
-<span class="kaira-bokeh" style="left:70%;bottom:25%;width:5px;height:5px;--bokeh-duration:14s;--bokeh-delay:3s;--bokeh-opacity:0.2" aria-hidden="true"></span>
-<span class="kaira-bokeh" style="left:85%;bottom:40%;width:4px;height:4px;--bokeh-duration:20s;--bokeh-delay:0.5s;--bokeh-opacity:0.15" aria-hidden="true"></span>
-<span class="kaira-bokeh" style="left:15%;bottom:50%;width:6px;height:6px;--bokeh-duration:15s;--bokeh-delay:4s;--bokeh-opacity:0.1" aria-hidden="true"></span>
-<span class="kaira-bokeh" style="left:40%;bottom:5%;width:7px;height:7px;--bokeh-duration:13s;--bokeh-delay:1.5s;--bokeh-opacity:0.14" aria-hidden="true"></span>
-<span class="kaira-bokeh" style="left:60%;bottom:55%;width:3px;height:3px;--bokeh-duration:17s;--bokeh-delay:2.5s;--bokeh-opacity:0.22" aria-hidden="true"></span>
+<div class="kaira-particles-canvas" aria-hidden="true"></div>
 <!-- /wp:html -->
 
-<!-- wp:heading {"textAlign":"center","level":1,"style":{"typography":{"fontFamily":"var(--wp--preset--font-family--heading)"},"elements":{"link":{"color":{"text":"var(--wp--preset--color--heading)"}}}},"textColor":"heading","fontSize":"hero"} -->
-<h1 class="wp-block-heading has-text-align-center has-heading-color has-text-color has-hero-font-size" style="font-family:var(--wp--preset--font-family--heading)">Explore With Kaira</h1>
-<!-- /wp:heading -->
+<!-- wp:html -->
+<div class="kaira-hero-exit" style="text-align:center">
+<h1 class="kaira-hero-title kaira-split-text">EXPLORE WITH KAIRA</h1>
+<div class="kaira-hero-subtitle">Luxury travel &amp; lifestyle through the eyes of your favorite AI influencer</div>
+</div>
+<!-- /wp:html -->
 
-<!-- wp:paragraph {"align":"center","style":{"typography":{"fontSize":"1.125rem","letterSpacing":"0.05em"},"color":{"text":"var(--wp--preset--color--text)"}}} -->
-<p class="has-text-align-center has-text-color" style="color:var(--wp--preset--color--text);font-size:1.125rem;letter-spacing:0.05em">Luxury travel &amp; lifestyle through the eyes of your favorite AI influencer</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"2rem"}}}} -->
-<div class="wp-block-buttons" style="margin-top:2rem">
+<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"2.5rem"}}}} -->
+<div class="wp-block-buttons" style="margin-top:2.5rem">
 <!-- wp:button -->
 <div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="/destinations/">Begin the Journey</a></div>
 <!-- /wp:button -->
@@ -35,7 +32,7 @@
 
 <!-- wp:html -->
 <div class="kaira-scroll-indicator" aria-hidden="true">
-<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<span>Scroll</span>
 </div>
 <!-- /wp:html -->
 
@@ -43,24 +40,83 @@
 </div>
 <!-- /wp:cover -->
 
-<!-- wp:group {"tagName":"section","layout":{"type":"constrained","contentSize":"1200px"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}}} -->
-<section class="wp-block-group" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)">
+<!-- SCENE 2: Introduction ========================================== -->
+<!-- wp:html -->
+<section class="kaira-scene kaira-scene-intro">
+<div class="kaira-scene-intro-image">
+<img src="" alt="Kaira portrait" class="kaira-parallax" loading="lazy" />
+</div>
+<div class="kaira-scene-intro-text">
+<p class="kaira-section-label kaira-reveal">Meet Kaira</p>
+<h2 class="kaira-display-font kaira-reveal" style="font-size:clamp(2rem,4vw,3.5rem);color:#fff;margin:1rem 0 1.5rem">
+Your Guide to the <em>Extraordinary</em>
+</h2>
+<p class="kaira-reveal" style="color:var(--wp--preset--color--text);font-size:1.125rem;line-height:1.8">
+AI-powered luxury travel influencer exploring the world's most breathtaking destinations. From Bali sunsets to Parisian nights, every journey is crafted to inspire wanderlust and elevate your perspective.
+</p>
+<div class="kaira-divider" style="margin:2rem 0;margin-left:0"></div>
+<a href="/about/" class="kaira-reveal" style="color:var(--wp--preset--color--accent);font-size:0.875rem;text-transform:uppercase;letter-spacing:0.15em;text-decoration:none;">Learn More &rarr;</a>
+</div>
+</section>
+<!-- /wp:html -->
 
-<!-- wp:heading {"textAlign":"center","level":2,"style":{"typography":{"fontSize":"0.75rem","textTransform":"uppercase","letterSpacing":"0.2em","fontWeight":"600"},"color":{"text":"var(--wp--preset--color--accent)"}}} -->
-<h2 class="wp-block-heading has-text-align-center has-text-color" style="color:var(--wp--preset--color--accent);font-size:0.75rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase">Latest from Kaira</h2>
-<!-- /wp:heading -->
+<!-- SCENE 3: Featured Destinations ================================= -->
+<!-- wp:html -->
+<section class="kaira-scene kaira-scene-destinations" style="background:var(--wp--preset--color--background)">
+<div class="kaira-scroll-progress"></div>
+<div style="position:absolute;top:3rem;left:50%;transform:translateX(-50%);text-align:center;z-index:2">
+<p class="kaira-section-label">Featured Destinations</p>
+<h2 class="kaira-display-font" style="font-size:clamp(2rem,4vw,3.5rem);color:#fff;margin-top:0.75rem">Where Will You Go?</h2>
+</div>
+<div class="kaira-horizontal-track">
+<div class="kaira-destination-card">
+<img src="" alt="Paris" loading="lazy" />
+<div class="kaira-destination-card-info">
+<span class="kaira-tag">Europe</span>
+<h3 style="color:#fff;font-family:var(--wp--preset--font-family--heading);font-size:1.5rem;margin:0">Paris, France</h3>
+</div>
+</div>
+<div class="kaira-destination-card">
+<img src="" alt="Bali" loading="lazy" />
+<div class="kaira-destination-card-info">
+<span class="kaira-tag">Asia</span>
+<h3 style="color:#fff;font-family:var(--wp--preset--font-family--heading);font-size:1.5rem;margin:0">Bali, Indonesia</h3>
+</div>
+</div>
+<div class="kaira-destination-card">
+<img src="" alt="Dubai" loading="lazy" />
+<div class="kaira-destination-card-info">
+<span class="kaira-tag">Middle East</span>
+<h3 style="color:#fff;font-family:var(--wp--preset--font-family--heading);font-size:1.5rem;margin:0">Dubai, UAE</h3>
+</div>
+</div>
+<div class="kaira-destination-card">
+<img src="" alt="Tulum" loading="lazy" />
+<div class="kaira-destination-card-info">
+<span class="kaira-tag">Americas</span>
+<h3 style="color:#fff;font-family:var(--wp--preset--font-family--heading);font-size:1.5rem;margin:0">Tulum, Mexico</h3>
+</div>
+</div>
+</div>
+</section>
+<!-- /wp:html -->
 
-<!-- wp:heading {"textAlign":"center","level":2,"style":{"spacing":{"margin":{"top":"1rem","bottom":"3rem"}}},"fontSize":"xx-large"} -->
-<h2 class="wp-block-heading has-text-align-center has-xx-large-font-size" style="margin-top:1rem;margin-bottom:3rem">Stories &amp; Destinations</h2>
-<!-- /wp:heading -->
+<!-- SCENE 4: Latest from the Journal =============================== -->
+<!-- wp:group {"tagName":"section","className":"kaira-scene","layout":{"type":"constrained","contentSize":"1200px"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}}} -->
+<section class="wp-block-group kaira-scene" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--70)">
 
-<!-- wp:query {"queryId":1,"query":{"perPage":3,"postType":"post","order":"desc","orderBy":"date"},"className":"kaira-card-grid"} -->
-<div class="wp-block-query kaira-card-grid">
+<!-- wp:html -->
+<p class="kaira-section-label" style="text-align:center">The Journal</p>
+<h2 class="kaira-display-font" style="text-align:center;font-size:clamp(2rem,4vw,3.5rem);color:#fff;margin:0.75rem 0 3rem">Stories &amp; Destinations</h2>
+<!-- /wp:html -->
+
+<!-- wp:query {"queryId":1,"query":{"perPage":3,"postType":"post","order":"desc","orderBy":"date"}} -->
+<div class="wp-block-query">
 
 <!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
 
-<!-- wp:group {"className":"kaira-card","layout":{"type":"default"}} -->
-<div class="wp-block-group kaira-card">
+<!-- wp:group {"className":"kaira-card kaira-reveal","layout":{"type":"default"}} -->
+<div class="wp-block-group kaira-card kaira-reveal">
 
 <!-- wp:group {"className":"kaira-card-image","layout":{"type":"default"}} -->
 <div class="wp-block-group kaira-card-image">
@@ -84,32 +140,44 @@
 </div>
 <!-- /wp:query -->
 
+<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"3rem"}}}} -->
+<div class="wp-block-buttons" style="margin-top:3rem">
+<!-- wp:button {"className":"is-style-outline"} -->
+<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="/blog/">Read the Journal</a></div>
+<!-- /wp:button -->
+</div>
+<!-- /wp:buttons -->
+
 </section>
 <!-- /wp:group -->
 
-<!-- wp:group {"tagName":"section","className":"kaira-newsletter","layout":{"type":"constrained","contentSize":"600px"}} -->
-<section class="wp-block-group kaira-newsletter">
-
-<!-- wp:heading {"textAlign":"center","level":2,"style":{"typography":{"fontSize":"0.75rem","textTransform":"uppercase","letterSpacing":"0.2em","fontWeight":"600"},"color":{"text":"var(--wp--preset--color--accent)"}}} -->
-<h2 class="wp-block-heading has-text-align-center has-text-color" style="color:var(--wp--preset--color--accent);font-size:0.75rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase">Stay Connected</h2>
-<!-- /wp:heading -->
-
-<!-- wp:heading {"textAlign":"center","level":2,"style":{"spacing":{"margin":{"top":"1rem","bottom":"1rem"}}},"fontSize":"x-large"} -->
-<h2 class="wp-block-heading has-text-align-center has-x-large-font-size" style="margin-top:1rem;margin-bottom:1rem">Join the Journey</h2>
-<!-- /wp:heading -->
-
-<!-- wp:paragraph {"align":"center","style":{"color":{"text":"var(--wp--preset--color--muted)"}}} -->
-<p class="has-text-align-center has-text-color" style="color:var(--wp--preset--color--muted)">Exclusive travel tips, behind-the-scenes content, and luxury lifestyle inspiration.</p>
-<!-- /wp:paragraph -->
-
+<!-- SCENE 5: Shop Preview + Newsletter ============================= -->
 <!-- wp:html -->
-<form class="kaira-newsletter-form" style="display:flex;gap:0.5rem;max-width:500px;margin:2rem auto 0;">
-<input type="email" placeholder="Your email address" style="flex:1;padding:0.875rem 1rem;background:var(--wp--preset--color--background);border:1px solid var(--wp--preset--color--muted);color:var(--wp--preset--color--text);font-size:1rem;" required />
-<button type="submit" style="padding:0.875rem 1.5rem;background:var(--wp--preset--color--accent);color:var(--wp--preset--color--background);border:none;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;cursor:pointer;">Subscribe</button>
+<section class="kaira-scene kaira-scene-split">
+<div style="width:100%;padding:4rem 2rem">
+<div style="max-width:1200px;margin:0 auto;text-align:center">
+<p class="kaira-section-label">The Collection</p>
+<h2 class="kaira-display-font" style="font-size:clamp(2rem,4vw,3.5rem);color:#fff;margin:0.75rem 0 3rem">Shop Kaira</h2>
+<p style="color:var(--wp--preset--color--muted);margin-bottom:2rem">Curated pieces from around the world. Coming soon.</p>
+<a href="/shop/" style="display:inline-block;padding:0.875rem 2rem;background:var(--wp--preset--color--accent);color:var(--wp--preset--color--background);text-decoration:none;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;">Browse Collection</a>
+</div>
+</div>
+<div class="kaira-newsletter" style="width:100%">
+<p class="kaira-section-label">Stay Connected</p>
+<h2 class="kaira-display-font" style="font-size:clamp(1.5rem,3vw,2.5rem);color:#fff;margin:0.75rem 0 1.5rem">Stay in the Loop</h2>
+<p style="color:var(--wp--preset--color--muted);margin-bottom:2rem">Exclusive travel tips, behind-the-scenes content, and luxury lifestyle inspiration.</p>
+<form class="kaira-newsletter-form" style="display:flex;flex-direction:column;align-items:center;gap:1rem;max-width:500px;margin:0 auto;">
+<div class="kaira-input-wrapper">
+<input type="email" class="kaira-input-underline" placeholder="Your email address" required />
+</div>
+<button type="submit" style="padding:0.875rem 2rem;background:var(--wp--preset--color--accent);color:var(--wp--preset--color--background);border:none;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;cursor:pointer;">Subscribe</button>
 </form>
+</div>
+</section>
 <!-- /wp:html -->
 
-</section>
-<!-- /wp:group -->
+<!-- wp:html -->
+</div><!-- .kaira-cinematic -->
+<!-- /wp:html -->
 
 <!-- wp:template-part {"slug":"footer","area":"footer"} /-->
