@@ -1,5 +1,5 @@
-<!-- wp:group {"className":"kaira-footer","backgroundColor":"surface","layout":{"type":"constrained","contentSize":"1200px"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|40"}}}} -->
-<div class="wp-block-group kaira-footer has-surface-background-color has-background" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--40)">
+<!-- wp:group {"className":"kaira-footer","backgroundColor":"surface","layout":{"type":"constrained","contentSize":"1200px"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|40"}}}} -->
+<div class="wp-block-group kaira-footer has-surface-background-color has-background" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--40)">
 
 <!-- wp:columns -->
 <div class="wp-block-columns">
@@ -7,16 +7,14 @@
 <!-- wp:column {"width":"40%"} -->
 <div class="wp-block-column" style="flex-basis:40%">
 
-<!-- wp:heading {"level":3,"style":{"typography":{"fontFamily":"var(--wp--preset--font-family--heading)","fontSize":"1.5rem"}}} -->
-<h3 class="wp-block-heading" style="font-family:var(--wp--preset--font-family--heading);font-size:1.5rem">Explore With Kaira</h3>
-<!-- /wp:heading -->
+<!-- wp:site-logo {"width":120,"shouldSyncIcon":false} /-->
 
-<!-- wp:paragraph {"style":{"color":{"text":"var(--wp--preset--color--muted)"}}} -->
-<p class="has-text-color" style="color:var(--wp--preset--color--muted)">Curating the finest destinations, lifestyle inspiration, and visual stories from around the world. Join us on a journey of discovery and wonder.</p>
+<!-- wp:paragraph {"style":{"color":{"text":"var(--wp--preset--color--muted)"},"spacing":{"margin":{"top":"1.5rem"}}}} -->
+<p class="has-text-color" style="color:var(--wp--preset--color--muted);margin-top:1.5rem">Curating the finest destinations, lifestyle inspiration, and visual stories from around the world.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:social-links {"className":"kaira-footer-social"} -->
-<ul class="wp-block-social-links kaira-footer-social">
+<!-- wp:social-links {"className":"kaira-footer-social","style":{"spacing":{"margin":{"top":"1.5rem"}}}} -->
+<ul class="wp-block-social-links kaira-footer-social" style="margin-top:1.5rem">
 <!-- wp:social-link {"url":"#","service":"instagram"} /-->
 <!-- wp:social-link {"url":"#","service":"tiktok"} /-->
 <!-- wp:social-link {"url":"#","service":"youtube"} /-->
@@ -36,18 +34,10 @@
 
 <!-- wp:list {"style":{"typography":{"fontSize":"0.875rem"},"spacing":{"padding":{"left":"0"}},"list-style":"none"}} -->
 <ul style="padding-left:0;font-size:0.875rem">
-<!-- wp:list-item -->
-<li><a href="/destinations/">Destinations</a></li>
-<!-- /wp:list-item -->
-<!-- wp:list-item -->
-<li><a href="/lifestyle/">Lifestyle</a></li>
-<!-- /wp:list-item -->
-<!-- wp:list-item -->
-<li><a href="/gallery/">Gallery</a></li>
-<!-- /wp:list-item -->
-<!-- wp:list-item -->
-<li><a href="/shop/">Shop</a></li>
-<!-- /wp:list-item -->
+<!-- wp:list-item --><li><a href="/destinations/">Destinations</a></li><!-- /wp:list-item -->
+<!-- wp:list-item --><li><a href="/lifestyle/">Lifestyle</a></li><!-- /wp:list-item -->
+<!-- wp:list-item --><li><a href="/gallery/">Gallery</a></li><!-- /wp:list-item -->
+<!-- wp:list-item --><li><a href="/shop/">Shop</a></li><!-- /wp:list-item -->
 </ul>
 <!-- /wp:list -->
 
@@ -62,12 +52,14 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"style":{"typography":{"fontSize":"0.875rem"},"color":{"text":"var(--wp--preset--color--muted)"}}} -->
-<p class="has-text-color" style="color:var(--wp--preset--color--muted);font-size:0.875rem">Subscribe to our newsletter for the latest travel stories, lifestyle tips, and exclusive content delivered to your inbox.</p>
+<p class="has-text-color" style="color:var(--wp--preset--color--muted);font-size:0.875rem">Subscribe for the latest travel stories and exclusive content.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:html -->
 <form class="kaira-subscribe-form" style="display:flex;gap:0.5rem;margin-top:1rem;">
-<input type="email" placeholder="Your email address" style="flex:1;padding:0.75rem 1rem;background:var(--wp--preset--color--background);border:1px solid var(--wp--preset--color--muted);color:var(--wp--preset--color--text);font-size:0.875rem;" required />
+<div class="kaira-input-wrapper" style="flex:1">
+<input type="email" class="kaira-input-underline" placeholder="Your email address" style="width:100%" required />
+</div>
 <button type="submit" style="padding:0.75rem 1.5rem;background:var(--wp--preset--color--accent);color:var(--wp--preset--color--background);border:none;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;cursor:pointer;">Subscribe</button>
 </form>
 <!-- /wp:html -->
@@ -82,9 +74,22 @@
 <hr class="wp-block-separator kaira-divider" style="margin-top:3rem;margin-bottom:2rem" />
 <!-- /wp:separator -->
 
-<!-- wp:paragraph {"align":"center","style":{"typography":{"fontSize":"0.75rem"},"color":{"text":"var(--wp--preset--color--muted)"}}} -->
-<p class="has-text-color has-text-align-center" style="color:var(--wp--preset--color--muted);font-size:0.75rem">&copy; 2026 Explore With Kaira. All rights reserved.</p>
+<!-- wp:group {"layout":{"type":"flex","justifyContent":"space-between","flexWrap":"wrap"}} -->
+<div class="wp-block-group">
+
+<!-- wp:paragraph {"style":{"typography":{"fontSize":"0.75rem"},"color":{"text":"var(--wp--preset--color--muted)"}}} -->
+<p class="has-text-color" style="color:var(--wp--preset--color--muted);font-size:0.75rem">&copy; 2026 Explore With Kaira. All rights reserved.</p>
 <!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<button class="kaira-back-to-top" aria-label="Back to top">
+<span>Back to Top</span>
+<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 10V2M2 6l4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<!-- /wp:html -->
+
+</div>
+<!-- /wp:group -->
 
 </div>
 <!-- /wp:group -->
