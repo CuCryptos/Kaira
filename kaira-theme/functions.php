@@ -93,6 +93,15 @@ function kaira_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'kaira_enqueue_assets' );
 
 /**
+ * Allow SVG uploads in the media library.
+ */
+function kaira_allow_svg_upload( $mimes ) {
+	$mimes['svg'] = 'image/svg+xml';
+	return $mimes;
+}
+add_filter( 'upload_mimes', 'kaira_allow_svg_upload' );
+
+/**
  * Remove Bluehost/NFD framework styles and scripts that conflict with theme CSS.
  */
 function kaira_dequeue_nfd_assets() {
