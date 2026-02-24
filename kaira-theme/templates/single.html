@@ -1,0 +1,51 @@
+<!-- wp:template-part {"slug":"header","area":"header"} /-->
+
+<!-- wp:group {"tagName":"article","layout":{"type":"constrained","contentSize":"800px"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|60"}}}} -->
+<article class="wp-block-group" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--60)">
+
+<!-- wp:post-terms {"term":"category","textAlign":"center","className":"kaira-card-meta","style":{"spacing":{"margin":{"bottom":"1rem"}}}} /-->
+
+<!-- wp:post-title {"textAlign":"center","style":{"spacing":{"margin":{"bottom":"1.5rem"}}}} /-->
+
+<!-- wp:post-date {"textAlign":"center","style":{"typography":{"fontSize":"0.875rem"},"color":{"text":"var(--wp--preset--color--muted)"},"spacing":{"margin":{"bottom":"3rem"}}}} /-->
+
+<!-- wp:post-featured-image {"style":{"spacing":{"margin":{"bottom":"3rem"}}}} /-->
+
+<!-- wp:post-content {"layout":{"type":"constrained","contentSize":"800px"}} /-->
+
+<!-- wp:separator {"className":"kaira-divider","style":{"spacing":{"margin":{"top":"4rem","bottom":"4rem"}}}} -->
+<hr class="wp-block-separator kaira-divider" style="margin-top:4rem;margin-bottom:4rem" />
+<!-- /wp:separator -->
+
+<!-- wp:heading {"textAlign":"center","level":2,"style":{"typography":{"fontSize":"0.75rem","textTransform":"uppercase","letterSpacing":"0.2em","fontWeight":"600"},"color":{"text":"var(--wp--preset--color--accent)"},"spacing":{"margin":{"bottom":"2rem"}}}} -->
+<h2 class="wp-block-heading has-text-align-center has-text-color" style="color:var(--wp--preset--color--accent);font-size:0.75rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:2rem">Keep Exploring</h2>
+<!-- /wp:heading -->
+
+<!-- wp:query {"queryId":3,"query":{"perPage":3,"postType":"post","order":"desc","orderBy":"date"}} -->
+<div class="wp-block-query">
+
+<!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
+
+<!-- wp:group {"className":"kaira-card","layout":{"type":"default"}} -->
+<div class="wp-block-group kaira-card">
+
+<!-- wp:group {"className":"kaira-card-image","layout":{"type":"default"}} -->
+<div class="wp-block-group kaira-card-image">
+<!-- wp:post-featured-image {"isLink":true} /-->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:post-title {"level":3,"isLink":true,"style":{"typography":{"fontSize":"1.25rem"},"spacing":{"margin":{"top":"1rem"}}}} /-->
+
+</div>
+<!-- /wp:group -->
+
+<!-- /wp:post-template -->
+
+</div>
+<!-- /wp:query -->
+
+</article>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","area":"footer"} /-->

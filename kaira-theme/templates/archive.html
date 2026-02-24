@@ -1,0 +1,49 @@
+<!-- wp:template-part {"slug":"header","area":"header"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"type":"constrained","contentSize":"1200px"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|60"}}}} -->
+<main class="wp-block-group" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--60)">
+
+<!-- wp:query-title {"type":"archive","textAlign":"center"} /-->
+
+<!-- wp:term-description {"textAlign":"center","style":{"color":{"text":"var(--wp--preset--color--muted)"},"spacing":{"margin":{"bottom":"var:preset|spacing|50"}}}} /-->
+
+<!-- wp:query {"queryId":4,"query":{"perPage":12,"postType":"post","inherit":true}} -->
+<div class="wp-block-query">
+
+<!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
+
+<!-- wp:group {"className":"kaira-card","layout":{"type":"default"}} -->
+<div class="wp-block-group kaira-card">
+
+<!-- wp:group {"className":"kaira-card-image","layout":{"type":"default"}} -->
+<div class="wp-block-group kaira-card-image">
+<!-- wp:post-featured-image {"isLink":true} /-->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:group {"className":"kaira-card-body","layout":{"type":"default"}} -->
+<div class="wp-block-group kaira-card-body">
+<!-- wp:post-terms {"term":"category","className":"kaira-card-meta"} /-->
+<!-- wp:post-title {"level":3,"isLink":true,"style":{"typography":{"fontSize":"1.25rem"}}} /-->
+<!-- wp:post-excerpt {"excerptLength":20} /-->
+</div>
+<!-- /wp:group -->
+
+</div>
+<!-- /wp:group -->
+
+<!-- /wp:post-template -->
+
+<!-- wp:query-pagination {"paginationArrow":"arrow","layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"var:preset|spacing|50"}}}} -->
+<!-- wp:query-pagination-previous /-->
+<!-- wp:query-pagination-numbers /-->
+<!-- wp:query-pagination-next /-->
+<!-- /wp:query-pagination -->
+
+</div>
+<!-- /wp:query -->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","area":"footer"} /-->
