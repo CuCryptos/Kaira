@@ -6,7 +6,7 @@
  */
 
 if ( ! defined( 'KAIRA_VERSION' ) ) {
-    define( 'KAIRA_VERSION', '2.5.1' );
+    define( 'KAIRA_VERSION', '2.5.2' );
 }
 
 function kaira_setup() {
@@ -214,6 +214,41 @@ function kaira_post_lightbox_markup() {
     <?php
 }
 add_action( 'wp_footer', 'kaira_post_lightbox_markup' );
+
+/**
+ * Expose Rank Math SEO meta fields to the WordPress REST API.
+ * Without this, POST /wp/v2/posts with meta: { rank_math_title: ... } silently discards the data.
+ */
+function kaira_register_rankmath_rest_meta() {
+    $fields = array(
+        'rank_math_title',
+        'rank_math_description',
+        'rank_math_focus_keyword',
+        'rank_math_canonical_url',
+        'rank_math_facebook_title',
+        'rank_math_facebook_description',
+        'rank_math_facebook_image',
+        'rank_math_twitter_title',
+        'rank_math_twitter_description',
+        'rank_math_pillar_content',
+    );
+
+    $post_types = array( 'post', 'page' );
+
+    foreach ( $post_types as $post_type ) {
+        foreach ( $fields as $field ) {
+            register_post_meta( $post_type, $field, array(
+                'show_in_rest'  => true,
+                'single'        => true,
+                'type'          => 'string',
+                'auth_callback' => function () {
+                    return current_user_can( 'edit_posts' );
+                },
+            ) );
+        }
+    }
+}
+add_action( 'init', 'kaira_register_rankmath_rest_meta' );
 
 require get_template_directory() . '/inc/custom-post-types.php';
 require get_template_directory() . '/inc/replicate-api.php';
