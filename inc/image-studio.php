@@ -192,11 +192,13 @@ class Kaira_Image_Studio {
         }
 
         $input = array(
-            'prompt'          => $full_prompt,
-            'negative_prompt' => kaira_get_negative_prompt(),
-            'width'           => 1024,
-            'height'          => 1536,
-            'num_outputs'     => 1,
+            'prompt'              => $full_prompt,
+            'negative_prompt'     => kaira_get_negative_prompt(),
+            'width'               => 1024,
+            'height'              => 1536,
+            'num_outputs'         => 1,
+            'guidance'            => 3.0,
+            'num_inference_steps' => 32,
         );
 
         $result = $this->client->create_prediction( $model_version, $input );
