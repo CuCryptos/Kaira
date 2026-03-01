@@ -60,8 +60,9 @@ export async function createPrediction(prompt, negativePrompt, options = {}) {
     num_outputs: options.numOutputs || 1,
     aspect_ratio: options.aspectRatio || "3:4",
     output_format: "png",
-    guidance: options.guidance || 3.5,
-    num_inference_steps: options.numInferenceSteps || 28,
+    guidance: options.guidance || 3.0,
+    num_inference_steps: options.numInferenceSteps || 32,
+    lora_scale: options.loraScale || 0.75,
   };
 
   if (negativePrompt) {

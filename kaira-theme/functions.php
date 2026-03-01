@@ -6,7 +6,7 @@
  */
 
 if ( ! defined( 'KAIRA_VERSION' ) ) {
-    define( 'KAIRA_VERSION', '2.1.0' );
+    define( 'KAIRA_VERSION', '2.5.0' );
 }
 
 function kaira_setup() {
@@ -33,7 +33,7 @@ function kaira_enqueue_assets() {
 
     wp_enqueue_style(
         'kaira-custom',
-        get_template_directory_uri() . '/assets/css/custom.css',
+        get_template_directory_uri() . '/assets/css/custom.min.css',
         array(),
         KAIRA_VERSION
     );
@@ -80,7 +80,7 @@ function kaira_enqueue_assets() {
         );
     }
 
-    if ( is_page_template( 'page-gallery' ) || is_page( 'gallery' ) ) {
+    if ( is_page_template( 'page-gallery' ) || is_page( 'gallery' ) || is_single() ) {
         wp_enqueue_script(
             'kaira-gallery',
             get_template_directory_uri() . '/assets/js/gallery.js',
@@ -136,6 +136,36 @@ function kaira_dequeue_nfd_assets() {
 add_action( 'wp_enqueue_scripts', 'kaira_dequeue_nfd_assets', 999 );
 
 /**
+ * Dequeue WooCommerce CSS/JS on non-WooCommerce pages.
+ * Removes 5-8 unnecessary HTTP requests on blog posts, homepage, and archive pages.
+ */
+function kaira_dequeue_woocommerce_assets() {
+    if ( ! class_exists( 'WooCommerce' ) ) {
+        return;
+    }
+
+    // Keep WooCommerce assets on shop-related pages.
+    if ( is_woocommerce() || is_cart() || is_checkout() || is_account_page() ) {
+        return;
+    }
+
+    // Dequeue WooCommerce styles.
+    wp_dequeue_style( 'woocommerce-general' );
+    wp_dequeue_style( 'woocommerce-layout' );
+    wp_dequeue_style( 'woocommerce-smallscreen' );
+    wp_dequeue_style( 'wc-blocks-style' );
+    wp_dequeue_style( 'wc-blocks-vendors-style' );
+
+    // Dequeue WooCommerce scripts.
+    wp_dequeue_script( 'woocommerce' );
+    wp_dequeue_script( 'wc-cart-fragments' );
+    wp_dequeue_script( 'wc-add-to-cart' );
+    wp_dequeue_script( 'wc-add-to-cart-variation' );
+    wp_dequeue_script( 'js-cookie' );
+}
+add_action( 'wp_enqueue_scripts', 'kaira_dequeue_woocommerce_assets', 999 );
+
+/**
  * Reset Site Editor template overrides when theme version changes.
  * Forces WordPress to use our theme file templates instead of stale DB copies.
  */
@@ -165,6 +195,25 @@ function kaira_reset_templates_on_update() {
     update_option( 'kaira_template_version', KAIRA_VERSION );
 }
 add_action( 'after_setup_theme', 'kaira_reset_templates_on_update' );
+
+/**
+ * Output lightbox markup on single posts for image grid support.
+ */
+function kaira_post_lightbox_markup() {
+    if ( ! is_single() ) {
+        return;
+    }
+    ?>
+    <div id="kaira-lightbox" class="kaira-lightbox" role="dialog" aria-modal="true">
+        <button class="kaira-lightbox-close" aria-label="Close">&times;</button>
+        <button class="kaira-lightbox-nav kaira-lightbox-prev" aria-label="Previous">&lsaquo;</button>
+        <img src="" alt="" />
+        <button class="kaira-lightbox-nav kaira-lightbox-next" aria-label="Next">&rsaquo;</button>
+        <div class="kaira-lightbox-counter"></div>
+    </div>
+    <?php
+}
+add_action( 'wp_footer', 'kaira_post_lightbox_markup' );
 
 require get_template_directory() . '/inc/custom-post-types.php';
 require get_template_directory() . '/inc/replicate-api.php';

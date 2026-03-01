@@ -9,7 +9,8 @@
  * - WordPress: wp_list_posts, wp_get_post, wp_create_post, wp_update_post, wp_delete_post,
  *              wp_list_categories, wp_create_category, wp_list_tags, wp_create_tag,
  *              wp_list_media, wp_upload_media, wp_set_featured_image, wp_get_site_info,
- *              wp_list_pages, wp_get_page, wp_create_page, wp_update_page, wp_delete_page
+ *              wp_list_pages, wp_get_page, wp_create_page, wp_update_page, wp_delete_page,
+ *              wp_get_block_patterns, wp_get_post_as_template
  * - AI Gen:    generate_travel_post, generate_destination_description,
  *              generate_seo_content, generate_image_prompt, generate_destination_image
  * - Kaira:     generate_kaira_image, list_kaira_presets, list_destination_presets
