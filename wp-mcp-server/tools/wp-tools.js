@@ -3,7 +3,7 @@
  */
 
 import path from "path";
-import { wpRequestSimple, uploadMedia, getSiteInfo } from "../lib/wp-client.js";
+import { wpRequest, wpRequestSimple, uploadMedia, getSiteInfo } from "../lib/wp-client.js";
 
 /**
  * Tool definitions for WordPress operations
@@ -490,6 +490,124 @@ export const wpToolDefinitions = [
       required: ["page_id"],
     },
   },
+  {
+    name: "wp_list_themes",
+    description: "List installed WordPress themes with their status (active/inactive)",
+    inputSchema: {
+      type: "object",
+      properties: {},
+    },
+  },
+  {
+    name: "wp_activate_theme",
+    description: "Activate an installed WordPress theme by its stylesheet name",
+    inputSchema: {
+      type: "object",
+      properties: {
+        stylesheet: {
+          type: "string",
+          description: "Theme stylesheet name (e.g., 'kadence', 'flavor', 'flavor-developer')",
+        },
+      },
+      required: ["stylesheet"],
+    },
+  },
+  {
+    name: "wp_list_plugins",
+    description: "List installed WordPress plugins with their status (active/inactive)",
+    inputSchema: {
+      type: "object",
+      properties: {},
+    },
+  },
+  {
+    name: "wp_install_plugin",
+    description: "Install a plugin from the WordPress.org repository by slug and optionally activate it",
+    inputSchema: {
+      type: "object",
+      properties: {
+        slug: {
+          type: "string",
+          description: "Plugin slug from wordpress.org (e.g., 'kadence-blocks')",
+        },
+        activate: {
+          type: "boolean",
+          description: "Activate the plugin after installation",
+          default: true,
+        },
+      },
+      required: ["slug"],
+    },
+  },
+  {
+    name: "wp_activate_plugin",
+    description: "Activate or deactivate an installed WordPress plugin",
+    inputSchema: {
+      type: "object",
+      properties: {
+        plugin: {
+          type: "string",
+          description: "Plugin identifier (e.g., 'kadence-blocks/kadence-blocks.php'). Use wp_list_plugins to find the correct identifier.",
+        },
+        active: {
+          type: "boolean",
+          description: "true to activate, false to deactivate",
+          default: true,
+        },
+      },
+      required: ["plugin"],
+    },
+  },
+  {
+    name: "wp_get_settings",
+    description: "Get WordPress site settings (title, description, timezone, date format, etc.)",
+    inputSchema: {
+      type: "object",
+      properties: {},
+    },
+  },
+  {
+    name: "wp_update_settings",
+    description: "Update WordPress site settings",
+    inputSchema: {
+      type: "object",
+      properties: {
+        settings: {
+          type: "object",
+          description: "Key-value pairs of settings to update (e.g., {title: 'My Site', description: 'A great site'})",
+        },
+      },
+      required: ["settings"],
+    },
+  },
+  {
+    name: "wp_rest_request",
+    description: "Make an arbitrary WordPress REST API request. Use for any endpoint not covered by other tools (e.g., theme customizer options, Kadence settings, custom endpoints).",
+    inputSchema: {
+      type: "object",
+      properties: {
+        method: {
+          type: "string",
+          description: "HTTP method: GET, POST, PUT, DELETE",
+          default: "GET",
+        },
+        endpoint: {
+          type: "string",
+          description: "API endpoint path (e.g., '/themes', '/plugins', '/settings')",
+        },
+        api_base: {
+          type: "string",
+          description: "API base path (default: /wp-json/wp/v2). Use /wp-json for root, or /wp-json/kadence/v1 for Kadence endpoints.",
+          default: "/wp-json/wp/v2",
+        },
+        body: {
+          type: "object",
+          description: "Request body for POST/PUT requests (will be JSON-encoded)",
+        },
+      },
+      required: ["endpoint"],
+    },
+  },
 ];
 
 /**
@@ -962,6 +1080,140 @@ export async function handleWPTool(name, args) {
           {
             type: "text",
             text: `Page ${args.page_id} ${args.force ? "permanently deleted" : "moved to trash"}`,
+          },
+        ],
+      };
+    }
+
+    case "wp_list_themes": {
+      const themes = await wpRequestSimple("/themes");
+      const summary = themes.map((t) => ({
+        stylesheet: t.stylesheet,
+        name: t.name?.rendered || t.name,
+        status: t.status,
+        version: t.version,
+        description: t.description?.rendered?.substring(0, 200) || "",
+      }));
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(summary, null, 2) }],
+      };
+    }
+
+    case "wp_activate_theme": {
+      const theme = await wpRequestSimple(`/themes/${args.stylesheet}`, {
+        method: "POST",
+        body: JSON.stringify({ status: "active" }),
+      });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Theme activated!\nStylesheet: ${theme.stylesheet}\nName: ${theme.name?.rendered || theme.name}\nStatus: ${theme.status}`,
+          },
+        ],
+      };
+    }
+
+    case "wp_list_plugins": {
+      const plugins = await wpRequestSimple("/plugins");
+      const summary = plugins.map((p) => ({
+        plugin: p.plugin,
+        name: p.name,
+        status: p.status,
+        version: p.version,
+        description: p.description?.rendered?.substring(0, 200) || p.description?.substring?.(0, 200) || "",
+      }));
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(summary, null, 2) }],
+      };
+    }
+
+    case "wp_install_plugin": {
+      const installData = {
+        slug: args.slug,
+        status: args.activate !== false ? "active" : "inactive",
+      };
+
+      const plugin = await wpRequestSimple("/plugins", {
+        method: "POST",
+        body: JSON.stringify(installData),
+      });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Plugin installed!\nPlugin: ${plugin.plugin}\nName: ${plugin.name}\nStatus: ${plugin.status}\nVersion: ${plugin.version}`,
+          },
+        ],
+      };
+    }
+
+    case "wp_activate_plugin": {
+      const plugin = await wpRequestSimple(`/plugins/${args.plugin}`, {
+        method: "POST",
+        body: JSON.stringify({ status: args.active !== false ? "active" : "inactive" }),
+      });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Plugin ${args.active !== false ? "activated" : "deactivated"}!\nPlugin: ${plugin.plugin}\nName: ${plugin.name}\nStatus: ${plugin.status}`,
+          },
+        ],
+      };
+    }
+
+    case "wp_get_settings": {
+      const settings = await wpRequestSimple("/settings");
+      return {
+        content: [{ type: "text", text: JSON.stringify(settings, null, 2) }],
+      };
+    }
+
+    case "wp_update_settings": {
+      const settings = await wpRequestSimple("/settings", {
+        method: "POST",
+        body: JSON.stringify(args.settings),
+      });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Settings updated!\n${JSON.stringify(settings, null, 2)}`,
+          },
+        ],
+      };
+    }
+
+    case "wp_rest_request": {
+      const method = (args.method || "GET").toUpperCase();
+      const options = { method };
+
+      if (args.body && (method === "POST" || method === "PUT")) {
+        options.body = JSON.stringify(args.body);
+      }
+
+      const apiBase = args.api_base || "/wp-json/wp/v2";
+      const result = await wpRequest(args.endpoint, options, apiBase);
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              {
+                data: result.data,
+                headers: result.headers,
+              },
+              null,
+              2
+            ),
           },
         ],
       };

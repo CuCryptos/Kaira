@@ -38,6 +38,16 @@
 - Must bump version to trigger reset — stale DB templates are the #1 cause of "my changes don't show up"
 - Cover blocks: use `useFeaturedImage:true` for dynamic hero backgrounds on single posts
 
+## Content Architecture
+- **Destination clusters**: Each major destination gets 3 posts — Hidden Gems, Hotels Roundup, Weekend Guide
+- **Complete clusters** (3 posts each): Marrakech, Tokyo, Amalfi Coast, Paris, Dubai, Bali
+- **Partial clusters** (2 posts — existing post serves as Hidden Gems): Mykonos, Tulum
+- **Categories**: Destinations (9), Hotel Reviews (11), Itineraries (12), The Take (42), Lifestyle (14)
+- **Tags per cluster**: Destination tag (e.g., Paris 70) + post-type tag (Hidden Gems 59, Luxury Hotels 60, Weekend Guide 61)
+- **Internal linking**: Each cluster post links to sibling posts and existing single reviews for that destination
+- **SEO**: Every post gets Rank Math metadata via `set_seo_metadata` — focus keyword, meta title (<60 chars), meta description (<160 chars), OG data
+- **Front page**: Query blocks auto-pull newest Hotel Reviews (cat 11, 4 posts) and Latest Stories (all, 3 posts)
+
 ## Architecture Decisions
 - MCP server (wp-mcp-server/prompts/kaira-presets.js) is source of truth for Kaira identity/presets
 - Build script generates PHP from JS: scripts/sync-presets.js → kaira-theme/inc/kaira-presets-generated.php
@@ -45,7 +55,9 @@
 - No PHP available locally — cannot run php -l for linting
 - No test suite — verify via build script run and visual inspection on live site
 
-## MCP Server (wp-mcp-server)
+## MCP Servers
+- **kaira-wp**: Content creation — posts, pages, media, image generation, travel post generation
+- **kaira-seo**: SEO & linking — Rank Math metadata, internal link audit/insertion, recipe tools, related posts
 - Tool dispatch in index.js routes by prefix: `wp_*` → wp-tools, `generate_*` → ai-tools
 - Non-standard prefixed tools (e.g., `list_kaira_presets`, `list_destination_presets`) need explicit dispatch entries in index.js
 - Restart Claude Code after changes to `.mcp.json` or MCP server code
